@@ -1,4 +1,6 @@
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager
 {
@@ -10,18 +12,159 @@ public class GameManager
         }
     }
     private GameManager(){}
-    private SaveData _data;
-    public SaveData data{
+    private SaveData _saveData;
+    public SaveData saveData{
         get {
-            if (_data == null) _data = loadData();
-            return _data;
+            if (_saveData == null) _saveData = loadSaveData();
+            return _saveData;
+        }
+        set
+        {
+            _saveData = value;
         }
     }
-    private SaveData loadData(){
-        return null;
+
+    private SettingData _settingData;
+    public SettingData settingData
+    {
+        get
+        {
+            if (_settingData == null) _settingData = loadSettingData();
+            return _settingData;
+        }
+    }
+
+    public string beforeSceneName = "";
+
+    public void save()
+    {
+        string saveDataJson = saveData.toJson();
+        string settingDataJson = settingData.toJson();
+
+        PlayerPrefs.SetString("saveDataJson", saveDataJson);
+        PlayerPrefs.SetString("settingDataJson", settingDataJson);
+        PlayerPrefs.Save();
+    }
+    private SaveData loadSaveData(){
+        string json = PlayerPrefs.GetString("saveDataJson");
+        SaveData data = json == "" ? null : JsonUtility.FromJson<SaveData>(json);
+        return data;
+    }
+
+    private SettingData loadSettingData()
+    {
+        string json = PlayerPrefs.GetString("settingDataJson");
+        SettingData data = json == "" ? new SettingData() : JsonUtility.FromJson<SettingData>(json);
+        return data;
+    }
+
+    public void createNewData()
+    {
+        saveData = new SaveData();
+    }
+
+    public void loadScene(string nextScene)
+    {
+        beforeSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(nextScene);
     }
 }
 
-public class SaveData{
+public enum Difficulty
+{
+    Easy,
+    Normal,
+    Difficult,
+}
 
+public enum GameStatus
+{
+    Story,
+    Game,
+}
+
+public enum StatusID
+{
+    Story1,
+    StoryLose,
+    Music1,
+}
+
+[System.Serializable]
+public class SaveData{
+    public Difficulty difficulty = Difficulty.Normal;
+    public GameStatus gameStatus = GameStatus.Story;
+    public StatusID statusID = StatusID.Story1;
+
+    public string toJson()
+    {
+        string jsonText = JsonUtility.ToJson(this);
+        return jsonText;
+    }
+}
+
+[System.Serializable]
+public class SettingData
+{
+    private float _bgmVolume;
+    public float bgmVolume
+    {
+        get
+        {
+            return _bgmVolume;
+        }
+        set
+        {
+            if (value < 0 || value > 1) return;
+            _bgmVolume = value;
+        }
+    }
+
+    private float _seVolume;
+    public float seVolume
+    {
+        get
+        {
+            return _seVolume;
+        }
+        set
+        {
+            if (value < 0 || value > 1) return;
+            _seVolume = value;
+        }
+    }
+
+    private float _delay;
+    public float delay
+    {
+        get
+        {
+            return _delay;
+        }
+        set
+        {
+            if (value < 0) return;
+            _delay = value;
+        }
+    }
+
+    private float _speed;
+    public float speed
+    {
+        get
+        {
+            return _speed;
+        }
+        set
+        {
+            if (value < 0) return;
+            _speed = value;
+        }
+    }
+
+    public string toJson()
+    {
+        string jsonText = JsonUtility.ToJson(this);
+        return jsonText;
+    }
 }

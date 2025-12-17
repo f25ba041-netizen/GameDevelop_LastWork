@@ -12,7 +12,7 @@ public class TitleSceneManager : MonoBehaviour
 
     void Start()
     {
-        if (GameManager.Instance.data == null) continueButton.SetActive(false);
+        if (GameManager.Instance.saveData == null) continueButton.SetActive(false);
         openingPanel.SetActive(true);
         titlePanel.SetActive(false);
         confirmWindow.SetActive(false);
