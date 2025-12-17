@@ -1,4 +1,7 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TitleSceneManager : MonoBehaviour
 {
@@ -8,14 +11,16 @@ public class TitleSceneManager : MonoBehaviour
     public GameObject openingPanel;
     public GameObject titlePanel;
     public GameObject confirmWindow;
-    public GameObject continueButton;
+    public GameObject continueButtonObject;
+    public Image fadePanel;
 
     void Start()
     {
-        if (GameManager.Instance.data == null) continueButton.SetActive(false);
+        if (GameManager.Instance.data == null) continueButtonObject.SetActive(false);
         openingPanel.SetActive(true);
         titlePanel.SetActive(false);
         confirmWindow.SetActive(false);
+        fadePanel.enabled = false;
     }
 
     void Update()
@@ -47,5 +52,61 @@ public class TitleSceneManager : MonoBehaviour
         TitanAnimator.SetBool("opening", false);
         openingPanel.SetActive(false);
         titlePanel.SetActive(true);
+    }
+
+    public void startButton(){
+        if (GameManager.Instance.data!=null) {
+            confirmWindow.SetActive(true);
+            return;
+        }
+        GameManager.Instance.createNewData();
+        StartCoroutine(FadeOutAndLoadScene("Story"));
+    }
+
+    public void confirmYesButton(){
+        GameManager.Instance.createNewData();
+        StartCoroutine(FadeOutAndLoadScene("Story"));
+    }
+
+    public void confirmNoButton(){
+        confirmWindow.SetActive(false);
+    }
+
+    public float fadeDuration = 1f;
+
+    public IEnumerator FadeOutAndLoadScene(string sceneName)
+    {
+        fadePanel.enabled = true;                 // パネルを有効化
+        float elapsedTime = 0.0f;                 // 経過時間を初期化
+        Color startColor = fadePanel.color;       // フェードパネルの開始色を取得
+        Color endColor = new Color(startColor.r, startColor.g, startColor.b, 1.0f); // フェードパネルの最終色を設定
+
+        // フェードアウトアニメーションを実行
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;                        // 経過時間を増やす
+            float t = Mathf.Clamp01(elapsedTime / fadeDuration);  // フェードの進行度を計算
+            fadePanel.color = Color.Lerp(startColor, endColor, t); // パネルの色を変更してフェードアウト
+            yield return null;                                     // 1フレーム待機
+        }
+
+        fadePanel.color = endColor;  // フェードが完了したら最終色に設定
+        SceneManager.LoadScene(sceneName); // シーンをロードしてメニューシーンに遷移
+    }
+
+    public void continueButton(){
+        if (GameManager.Instance.data == null) {GameManager.Instance.createNewData();}
+        if (GameManager.Instance.data.gameStatus == GameStatus.Story){
+            StartCoroutine(FadeOutAndLoadScene("Story"));
+            return;
+        }
+        else {
+            StartCoroutine(FadeOutAndLoadScene("Game"));
+            return;
+        }
+    }
+
+    public void settingButton(){
+        StartCoroutine(FadeOutAndLoadScene("Setting"));
     }
 }
