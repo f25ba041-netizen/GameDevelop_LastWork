@@ -85,16 +85,14 @@ public enum GameStatus
 
 public enum StatusID
 {
-    Story1,
-    StoryLose,
-    Music1,
+    test
 }
 
 [System.Serializable]
 public class SaveData{
     public Difficulty difficulty = Difficulty.Normal;
     public GameStatus gameStatus = GameStatus.Story;
-    public StatusID statusID = StatusID.Story1;
+    public StatusID statusID = StatusID.test;
 
     public string toJson()
     {

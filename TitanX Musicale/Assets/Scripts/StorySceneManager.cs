@@ -29,7 +29,7 @@ public class StorySceneManager : MonoBehaviour
     public Text subtitle;
 
     public StorySceneManager(){
-        StoryID = GameManager.Instance.data.statusID.ToString();
+        StoryID = GameManager.Instance.saveData.statusID.ToString();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

@@ -16,7 +16,7 @@ public class TitleSceneManager : MonoBehaviour
 
     void Start()
     {
-        if (GameManager.Instance.data == null) continueButtonObject.SetActive(false);
+        if (GameManager.Instance.saveData == null) continueButtonObject.SetActive(false);
         openingPanel.SetActive(true);
         titlePanel.SetActive(false);
         confirmWindow.SetActive(false);
@@ -55,7 +55,7 @@ public class TitleSceneManager : MonoBehaviour
     }
 
     public void startButton(){
-        if (GameManager.Instance.data!=null) {
+        if (GameManager.Instance.saveData!=null) {
             confirmWindow.SetActive(true);
             return;
         }
@@ -95,8 +95,8 @@ public class TitleSceneManager : MonoBehaviour
     }
 
     public void continueButton(){
-        if (GameManager.Instance.data == null) {GameManager.Instance.createNewData();}
-        if (GameManager.Instance.data.gameStatus == GameStatus.Story){
+        if (GameManager.Instance.saveData == null) {GameManager.Instance.createNewData();}
+        if (GameManager.Instance.saveData.gameStatus == GameStatus.Story){
             StartCoroutine(FadeOutAndLoadScene("Story"));
             return;
         }
