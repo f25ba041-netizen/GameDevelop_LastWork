@@ -34,22 +34,48 @@ public class StorySceneManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log($"StoryData/{StoryID}.json");
         string jsonData = Resources.Load<TextAsset>($"StoryData/{StoryID}").ToString();
         storyData = JsonUtility.FromJson<StoryData>(jsonData);
-        Debug.Log(storyData.scenes[0].image);
         background.sprite = Resources.Load<Sprite>($"{storyData.scenes[0].image}");
         speaker.text = storyData.scenes[0].serif[0].speaker;
         subtitle.text = storyData.scenes[0].serif[0].text;
     }
 
+    private int currentScene = 0;
+    private int currentSerif = 0;
+
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0)) {
+            nextScene();
+        }
     }
 
-    public void skipButton(){}
+    private void toBattle(){
+        // !
+        // ここに選曲の処理
+        // !
+        GameManager.Instance.save();
+        GameManager.Instance.loadScene("game");
+    }
 
-    public void nextScene(){}
+    public void skipButton(){
+        toBattle();
+    }
+
+    public void nextScene(){
+        currentSerif++;
+        if (currentSerif >= storyData.scenes[currentScene].serif.Length) {
+            currentScene++;
+            currentSerif = 0;
+        }
+        if (currentScene >= storyData.scenes.Length) {
+            toBattle();
+            return;
+        }
+        background.sprite = Resources.Load<Sprite>($"{storyData.scenes[currentScene].image}");
+        speaker.text = storyData.scenes[currentScene].serif[currentSerif].speaker;
+        subtitle.text = storyData.scenes[currentScene].serif[currentSerif].text;
+    }
 }
