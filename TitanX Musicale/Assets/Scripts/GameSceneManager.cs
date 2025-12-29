@@ -9,6 +9,8 @@ public class GameSceneManager : MonoBehaviour
     public GameObject posePanel;
     public GameObject countdownPanel;
     public Text countdownText;
+    public GameObject resultPanel;
+    public Text resultEvalText;
     public string musicID;
     public int score;
     private bool isPose = false;
@@ -46,6 +48,13 @@ public class GameSceneManager : MonoBehaviour
         }));
     }
 
+    public void nextButton(){
+        // !
+        // 次のストーリーを決める処理をここに埋める
+        // !
+        GameManager.Instance.loadScene("Story");
+    }
+
     private IEnumerator DelayMethod(float waitTime, Action action)
     {
         yield return new WaitForSeconds(waitTime);
@@ -57,6 +66,7 @@ public class GameSceneManager : MonoBehaviour
     {
         posePanel.SetActive(false);
         countdownPanel.SetActive(false);
+        resultPanel.SetActive(false);
     }
 
     // Update is called once per frame
