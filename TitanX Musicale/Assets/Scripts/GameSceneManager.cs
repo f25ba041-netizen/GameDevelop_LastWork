@@ -28,7 +28,8 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void attack(){
-        // 攻撃を出す処理
+        axion.attack();
+        // まだエフェクトのみ 判定の処理を付ける
     }
 
     public void poseGame(){
@@ -102,6 +103,9 @@ public class GameSceneManager : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)){
             moveToRight();
+        }
+        if (Input.GetMouseButtonDown(0)) {
+            attack();
         }
     }
 

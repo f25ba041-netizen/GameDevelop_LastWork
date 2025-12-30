@@ -9,6 +9,7 @@ public class AxionMovement : MonoBehaviour
     public ParticleSystem moveParticle;
     private float targetX = -23;
     private float moveSpeed = 20;
+    public GameObject attackParticle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,5 +38,10 @@ public class AxionMovement : MonoBehaviour
     public void moveToLeft(){
         moveParticle.Play();
         targetX = -23;
+    }
+
+    public void attack(){
+        GameObject particle = Instantiate(attackParticle);
+        particle.transform.position = new Vector3(transform.position.x,13,13);
     }
 }

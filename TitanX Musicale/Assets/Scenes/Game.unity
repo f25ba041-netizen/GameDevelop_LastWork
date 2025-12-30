@@ -12533,6 +12533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AxionMovement
   moveParticle: {fileID: 699057389}
+  attackParticle: {fileID: 7206056271522764522, guid: 6120efe9cb0077f47a697a49424f9995, type: 3}
 --- !u!199 &1010757911802268197
 ParticleSystemRenderer:
   serializedVersion: 6
