@@ -14,6 +14,22 @@ public class GameSceneManager : MonoBehaviour
     public string musicID;
     public int score;
     private bool isPose = false;
+    public AxionMovement axion;
+    public bool isRight = false;
+
+    public void moveToRight(){
+        axion.moveToRight();
+        isRight = true;
+    }
+
+    public void moveToLeft(){
+        axion.moveToLeft();
+        isRight = false;
+    }
+
+    public void attack(){
+        // 攻撃を出す処理
+    }
 
     public void poseGame(){
         isPose = true;
@@ -56,7 +72,7 @@ public class GameSceneManager : MonoBehaviour
     }
 
     private IEnumerator DelayMethod(float waitTime, Action action)
-    {
+    { // 指定時間後に渡した関数が実行される
         yield return new WaitForSeconds(waitTime);
         action();
     }
@@ -67,21 +83,33 @@ public class GameSceneManager : MonoBehaviour
         posePanel.SetActive(false);
         countdownPanel.SetActive(false);
         resultPanel.SetActive(false);
+
+        Beam();
+        StartCoroutine(DelayMethod(2.0f , () => {
+            BeamEnd();
+        }));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Escape)){
+        if(Input.GetKeyDown(KeyCode.Escape)){
             poseGame();
+        }
+        if(isPose) return;
+        if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)){
+            moveToLeft();
+        }
+        if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)){
+            moveToRight();
         }
     }
 
-    void Beam(){
+    void Beam(){ // チャージ開始から再生するためチャージ分の時間を考える
         beamParticle.Play();
     }
 
     void BeamEnd(){
-        // ビームを止める処理
+        beamParticle.Stop();
     }
 }

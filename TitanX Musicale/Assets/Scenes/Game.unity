@@ -6235,6 +6235,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598055730}
   m_CullTransparentMesh: 1
+--- !u!198 &699057389 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4891440538664600065, guid: 82066d902ed0dd6488ddfd32eb994801, type: 3}
+  m_PrefabInstance: {fileID: 228268199}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &702053399
 GameObject:
   m_ObjectHideFlags: 0
@@ -7222,6 +7227,8 @@ MonoBehaviour:
   resultEvalText: {fileID: 1588857504}
   musicID: 
   score: 0
+  axion: {fileID: 919132147942448099}
+  isRight: 0
 --- !u!4 &1239205472
 Transform:
   m_ObjectHideFlags: 0
@@ -12505,6 +12512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543450651597734232}
+  - component: {fileID: 919132147942448099}
   m_Layer: 0
   m_Name: Axion
   m_TagString: Untagged
@@ -12512,6 +12520,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132147942448099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147942448098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e18ea5362e7259d4280ee0a25eaae1cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AxionMovement
+  moveParticle: {fileID: 699057389}
 --- !u!199 &1010757911802268197
 ParticleSystemRenderer:
   serializedVersion: 6
