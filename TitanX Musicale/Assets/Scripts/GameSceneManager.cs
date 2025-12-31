@@ -66,9 +66,7 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void nextButton(){
-        // !
-        // 次のストーリーを決める処理をここに埋める
-        // !
+        GameManager.Instance.selectStory();
         GameManager.Instance.loadScene("Story");
     }
 

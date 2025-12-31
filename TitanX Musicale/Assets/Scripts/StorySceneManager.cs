@@ -53,9 +53,12 @@ public class StorySceneManager : MonoBehaviour
     }
 
     private void toBattle(){
-        // !
-        // ここに選曲の処理
-        // !
+        if (!GameManager.Instance.selectMusic()){ // 選曲をしてエンディングだったとき
+            GameManager.Instance.saveData = null;
+            GameManager.Instance.save();
+            GameManager.Instance.loadScene("title");
+            return;
+        }
         GameManager.Instance.save();
         GameManager.Instance.loadScene("game");
     }

@@ -38,8 +38,8 @@ public class GameManager
 
     public void save()
     {
-        string saveDataJson = saveData.toJson();
-        string settingDataJson = settingData.toJson();
+        string saveDataJson = (_saveData != null ? _saveData.toJson() : "");
+        string settingDataJson = (_settingData != null ? _settingData.toJson() : "");
 
         PlayerPrefs.SetString("saveDataJson", saveDataJson);
         PlayerPrefs.SetString("settingDataJson", settingDataJson);
@@ -67,6 +67,19 @@ public class GameManager
     {
         beforeSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(nextScene);
+    }
+
+    public bool selectMusic(){ // 選曲が失敗したとき(=エンディングのとき)falseを返す
+        // !
+        // ここに選曲処理を書く
+        // !
+        return false;
+    }
+
+    public void selectStory(){
+        // !
+        // ここにストーリー選択の処理を書く
+        // !
     }
 }
 
