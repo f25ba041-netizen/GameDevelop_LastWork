@@ -1,6 +1,9 @@
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Collections;
+using System;
 
 public class GameManager
 {
@@ -69,6 +72,11 @@ public class GameManager
         SceneManager.LoadScene(nextScene);
     }
 
+    public NotesData loadNotesData(StatusID MusicID){
+        string jsonData = Resources.Load<TextAsset>($"MusicData/{MusicID}").ToString();
+        return JsonUtility.FromJson<NotesData>(jsonData);
+    }
+
     public bool selectMusic(){ // 選曲が失敗したとき(=エンディングのとき)falseを返す
         // !
         // ここに選曲処理を書く
@@ -98,7 +106,8 @@ public enum GameStatus
 
 public enum StatusID
 {
-    test
+    test,
+    mtest
 }
 
 [System.Serializable]
@@ -178,4 +187,29 @@ public class SettingData
         string jsonText = JsonUtility.ToJson(this);
         return jsonText;
     }
+}
+
+[System.Serializable]
+public class NotesData {
+    public MetaData metadata;
+    public List<Note> taps;
+    public List<Note> directionals;
+    public List<Note> slides;
+    public List<List<float>> bpms;
+    public List<List<float>> barLengths;
+}
+[System.Serializable]
+public class MetaData {
+    public string title;
+    public string artist;
+    public string designer;
+    public string waveoffset;
+    public List<string> requests;
+}
+[System.Serializable]
+public class Note {
+    public int tick;
+    public int lane;
+    public int width;
+    public int type;
 }

@@ -12,10 +12,28 @@ public class GameSceneManager : MonoBehaviour
     public GameObject resultPanel;
     public Text resultEvalText;
     public string musicID;
-    public int score;
+    private int _score = 0;
+    public int score{
+        set {
+            _score = value;
+            if (_score < 0) _score = 0; 
+            scoreText.text = $"スコア {_score}";
+        }
+        get {
+            return _score;
+        }
+    }
     private bool isPose = false;
     public AxionMovement axion;
     public bool isRight = false;
+    public bool isInverse = false;
+    public GameObject missilePrefab;
+    public GameObject missilePos;
+    public GameObject TitanX;
+    public Text scoreText;
+    public NotesData notes;
+    private float beamTimer = 0;
+    private bool existBeam = false;
 
     public void moveToRight(){
         axion.moveToRight();
@@ -83,9 +101,17 @@ public class GameSceneManager : MonoBehaviour
         countdownPanel.SetActive(false);
         resultPanel.SetActive(false);
 
-        Beam();
+        // 以下テスト用
+        notes = GameManager.Instance.loadNotesData(StatusID.mtest);
+        Debug.Log(notes.metadata.title);
+        //Beam();
+        Spin();
+        //StartCoroutine(DelayMethod(2.0f , () => {
+        //    BeamEnd();
+        //}));
         StartCoroutine(DelayMethod(2.0f , () => {
-            BeamEnd();
+            Spin();
+            Missile();
         }));
     }
 
@@ -105,13 +131,44 @@ public class GameSceneManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) {
             attack();
         }
+        if (beamTimer >= 0.1f && existBeam) {
+            beamTimer = 0;
+            score -= (isInverse == isRight ? 20 : 0);
+        }
+        beamTimer += Time.deltaTime;
     }
 
-    void Beam(){ // チャージ開始から再生するためチャージ分の時間を考える
+    void Beam(){
+        // チャージ開始から再生するためチャージ分の時間を考える
+        // チャージには1秒かかる
         beamParticle.Play();
+        StartCoroutine(DelayMethod(1 , () => {
+            existBeam = true;
+        }));
     }
 
     void BeamEnd(){
         beamParticle.Stop();
+        existBeam = false;
+    }
+
+    void Missile(){
+        GameObject missileObj = Instantiate(missilePrefab);
+        missileObj.transform.position = missilePos.transform.position;
+        missileObj.transform.rotation = missilePos.transform.rotation;
+    }
+
+    void Spin(){
+        isInverse = !isInverse;
+        TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
+        StartCoroutine(DelayMethod(0.03f , () => {
+            TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
+        }));
+        StartCoroutine(DelayMethod(0.06f , () => {
+            TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
+        }));
+        StartCoroutine(DelayMethod(0.09f , () => {
+            TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
+        }));
     }
 }

@@ -10,6 +10,8 @@ public class AxionMovement : MonoBehaviour
     private float targetX = -23;
     private float moveSpeed = 20;
     public GameObject attackParticle;
+    public GameObject NormalObj;
+    public GameObject BrokenObj;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,5 +45,10 @@ public class AxionMovement : MonoBehaviour
     public void attack(){
         GameObject particle = Instantiate(attackParticle);
         particle.transform.position = new Vector3(transform.position.x,13,13);
+    }
+
+    public void toBroken(){
+        NormalObj.SetActive(false);
+        BrokenObj.SetActive(true);
     }
 }
