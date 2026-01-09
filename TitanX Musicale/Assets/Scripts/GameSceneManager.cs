@@ -11,7 +11,7 @@ public class GameSceneManager : MonoBehaviour
     public Text countdownText;
     public GameObject resultPanel;
     public Text resultEvalText;
-    public string musicID;
+    public StatusID musicID;
     private int _score = 0;
     public int score{
         set {
@@ -23,7 +23,7 @@ public class GameSceneManager : MonoBehaviour
             return _score;
         }
     }
-    private bool isPose = false;
+    private bool isPose = true;
     public AxionMovement axion;
     public bool isRight = false;
     public bool isInverse = false;
@@ -34,6 +34,7 @@ public class GameSceneManager : MonoBehaviour
     public NotesData notes;
     private float beamTimer = 0;
     private bool existBeam = false;
+    private float bpm;
 
     public void moveToRight(){
         axion.moveToRight();
@@ -101,17 +102,17 @@ public class GameSceneManager : MonoBehaviour
         countdownPanel.SetActive(false);
         resultPanel.SetActive(false);
 
-        // 以下テスト用
-        notes = GameManager.Instance.loadNotesData(StatusID.mtest);
-        Debug.Log(notes.metadata.title);
-        //Beam();
-        Spin();
-        //StartCoroutine(DelayMethod(2.0f , () => {
-        //    BeamEnd();
-        //}));
-        StartCoroutine(DelayMethod(2.0f , () => {
-            Spin();
-            Missile();
+        // 本番で適用
+        // musicID = GameManager.saveData.StatusID;
+
+        // テスト用
+        musicID = StatusID.mtest;
+
+        notes = GameManager.Instance.loadNotesData(musicID);
+        Debug.Log(notes.bpms[1]);
+        bpm = notes.bpms[1];
+        StartCoroutine(DelayMethod(3f , () => { // 3秒後に開始
+            isPose = false;
         }));
     }
 
@@ -152,7 +153,7 @@ public class GameSceneManager : MonoBehaviour
         existBeam = false;
     }
 
-    void Missile(){
+    void Missile(){ // 0.4秒前に
         GameObject missileObj = Instantiate(missilePrefab);
         missileObj.transform.position = missilePos.transform.position;
         missileObj.transform.rotation = missilePos.transform.rotation;

@@ -195,7 +195,7 @@ public class NotesData {
     public List<Note> taps;
     public List<Note> directionals;
     public List<Note> slides;
-    public List<List<float>> bpms;
+    public List<float> bpms;
     public List<List<float>> barLengths;
 }
 [System.Serializable]
