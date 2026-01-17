@@ -28,7 +28,7 @@ public class GameSceneManager : MonoBehaviour
             return _score;
         }
     }
-    private bool isPose = true;
+    public bool isPose = true;
     public AxionMovement axion;
     public bool isRight = false;
     public bool isInverse = false;
@@ -44,6 +44,7 @@ public class GameSceneManager : MonoBehaviour
     private float currentTime = 0f;
     private float currentBeat = 0f;
     private Beat beat;
+    private List<CircleMove> currentCircleList = new List<CircleMove>();
 
     private enum NoteType
     {
@@ -64,11 +65,22 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void attack(){
+        currentCircleList.RemoveAll(item => item == null);
+        if (currentCircleList.Count <= 0) return;
+        float circleTimer = currentCircleList[0].timer;
+        if (circleTimer < 0.8) return;
+        Destroy(currentCircleList[0].transform.gameObject);
+        if (circleTimer > 1.1 || circleTimer < 0.9) return;
         axion.attack();
+        score += 100;
+        if (circleTimer > 1.14 || circleTimer < 0.96) return;
+        score += 50;
         // まだエフェクトのみ 判定の処理を付ける
     }
 
     public void poseGame(){
+        if (beat.IsEnd()) return;
+        if (isPose) return;
         isPose = true;
         posePanel.SetActive(true);
     }
@@ -163,6 +175,15 @@ public class GameSceneManager : MonoBehaviour
         }
         beamTimer += Time.deltaTime;
 
+        if (beat.IsEnd())
+        {
+            StartCoroutine(DelayMethod(2f, () => { // 2秒後にリザルトへ
+                resultPanel.SetActive(true);
+                isPose = true;
+            }));
+            return;
+        }
+
         if (currentBeat >= beat.current.tick)
         {
             switch (beat.current.beatType)
@@ -182,12 +203,6 @@ public class GameSceneManager : MonoBehaviour
                 case BeatType.SlideEnd:
                     BeamEnd();
                     break;
-            }
-            if (beat.IsEnd())
-            {
-                StartCoroutine(DelayMethod(1f, () => { // 1秒後にストーリーへ
-                    toStory();
-                }));
             }
             beat.Next();
         }
@@ -209,6 +224,15 @@ public class GameSceneManager : MonoBehaviour
         {
             int safety = 0;
             NotesData notes = JsonConvert.DeserializeObject<NotesData>(JsonConvert.SerializeObject(GameManager.Instance.notesData));
+            // タップからフリックに対応するノーツを削除
+            foreach(var note in notes.directionals){
+                for(int i=0;i<notes.taps.Count;i++){
+                    if(notes.taps[i].tick != note.tick)continue;
+                    notes.taps.RemoveAt(i);
+                    break;
+                }
+            }
+
             while (notes.taps.Count > 0 || notes.directionals.Count > 0 || notes.slides.Count > 0)
             {
                 safety++;
@@ -260,6 +284,7 @@ public class GameSceneManager : MonoBehaviour
                 switch (tempList[minIndex].beatType)
                 {
                     case BeatType.Tap:
+                        tempList[minIndex].tick -= (int) notes.bpms[0][1] * 8; // 開始タイミングの調整
                         flow.Add(tempList[minIndex]);
                         notes.taps.RemoveAt(0);
                         break;
@@ -268,12 +293,12 @@ public class GameSceneManager : MonoBehaviour
                         notes.taps.RemoveAt(0);
                         break;
                     case BeatType.Directional:
-                        
+                        tempList[minIndex].tick -= (int) (notes.bpms[0][1] * 8 * 0.4); // 開始タイミングの調整
                         flow.Add(tempList[minIndex]);
                         notes.directionals.RemoveAt(0);
                         break;
                     case BeatType.SlideStart:
-                        tempList[minIndex].tick -= (int) notes.bpms[0][1] * 8;
+                        tempList[minIndex].tick -= (int) notes.bpms[0][1] * 8; // 開始タイミングの調整
                         flow.Add(tempList[minIndex]);
                         flow.Add(slideEnd);
                         notes.slides.RemoveAt(0);
@@ -309,14 +334,15 @@ public class GameSceneManager : MonoBehaviour
         }
         public bool IsEnd()
         {
-            if (currentIndex >= flow.Count - 1) return true;
+            if (currentIndex >= flow.Count) return true;
             return false;
         }
     }
 
     void Attack()
     {
-        GameObject circle = Instantiate(circlePrefab, TitanX.transform.position, Quaternion.identity);
+        GameObject circle = Instantiate(circlePrefab);
+        currentCircleList.Add(circle.GetComponent<CircleMove>());
     }
     void Beam(){
         // チャージ開始から再生するためチャージ分の時間を考える

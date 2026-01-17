@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class MissileMove : MonoBehaviour
 {
+    private GameSceneManager manager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        manager = GameObject.Find("GameSceneManager").GetComponent<GameSceneManager>();
     }
 
     public float speed = 300; // →約0.4秒で届く
@@ -14,6 +15,9 @@ public class MissileMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (manager.isPose) {
+            return;
+        }
         Vector3 pos = transform.position;
         transform.position -= speed * Time.deltaTime * transform.forward;
         timer += Time.deltaTime;
