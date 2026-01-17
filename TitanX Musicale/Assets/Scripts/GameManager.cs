@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-
+using Newtonsoft.Json;
 public class GameManager
 {
     static private GameManager instance;
@@ -36,6 +36,8 @@ public class GameManager
             return _settingData;
         }
     }
+
+    public NotesData notesData;
 
     public string beforeSceneName = "";
 
@@ -72,16 +74,21 @@ public class GameManager
         SceneManager.LoadScene(nextScene);
     }
 
-    public NotesData loadNotesData(StatusID MusicID){
-        string jsonData = Resources.Load<TextAsset>($"MusicData/{MusicID}").ToString();
-        return JsonUtility.FromJson<NotesData>(jsonData);
+    public NotesData loadNotesData(String MusicID){
+        TextAsset asset = Resources.Load<TextAsset>($"MusicData/{MusicID}");
+        string jsonText = asset?.text;
+        if(jsonText == null)
+        {
+            Debug.LogError("TextAsset が読み込めませんでした");
+            return null;
+        }
+        return JsonConvert.DeserializeObject<NotesData>(jsonText);
     }
 
-    public bool selectMusic(){ // 選曲が失敗したとき(=エンディングのとき)falseを返す
+    public void selectMusic(){ // 選曲が失敗したとき(=エンディングのとき)falseを返す
         // !
         // ここに選曲処理を書く
-        // !
-        return false;
+        notesData = loadNotesData($"music_{saveData.statusID}");
     }
 
     public void selectStory(){
@@ -107,7 +114,6 @@ public enum GameStatus
 public enum StatusID
 {
     test,
-    mtest
 }
 
 [System.Serializable]
@@ -194,8 +200,8 @@ public class NotesData {
     public MetaData metadata;
     public List<Note> taps;
     public List<Note> directionals;
-    public List<Note> slides;
-    public List<float> bpms;
+    public List<List<Note>> slides;
+    public List<List<float>> bpms;
     public List<List<float>> barLengths;
 }
 [System.Serializable]
@@ -203,7 +209,7 @@ public class MetaData {
     public string title;
     public string artist;
     public string designer;
-    public string waveoffset;
+    public float waveoffset;
     public List<string> requests;
 }
 [System.Serializable]
@@ -212,4 +218,15 @@ public class Note {
     public int lane;
     public int width;
     public int type;
+    public BeatType beatType = BeatType.None;
+}
+
+public enum BeatType
+{
+    None,
+    Tap,
+    Critical,
+    Directional,
+    SlideStart,
+    SlideEnd,
 }

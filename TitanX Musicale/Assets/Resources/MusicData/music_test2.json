@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "title": "testMusic",
+        "title": "test1",
         "artist": "",
         "designer": "",
         "waveoffset": 0.0,
@@ -10,64 +10,40 @@
     },
     "taps": [
         {
-            "tick": 480,
-            "lane": 4,
+            "tick": 960,
+            "lane": 7,
             "width": 3,
             "type": 1
         },
         {
-            "tick": 1440,
-            "lane": 6,
+            "tick": 1920,
+            "lane": 7,
             "width": 3,
             "type": 1
         },
         {
-            "tick": 2880,
-            "lane": 4,
-            "width": 3,
-            "type": 2
-        },
-        {
-            "tick": 3360,
-            "lane": 9,
+            "tick": 4800,
+            "lane": 7,
             "width": 3,
             "type": 1
         },
         {
-            "tick": 3840,
-            "lane": 4,
-            "width": 3,
-            "type": 1
-        },
-        {
-            "tick": 5280,
-            "lane": 4,
-            "width": 3,
-            "type": 1
-        },
-        {
-            "tick": 5040,
-            "lane": 8,
-            "width": 3,
-            "type": 1
-        },
-        {
-            "tick": 6000,
-            "lane": 6,
+            "tick": 5760,
+            "lane": 7,
             "width": 3,
             "type": 1
         }
     ],
     "directionals": [
         {
-            "tick": 3840,
-            "lane": 4,
+            "tick": 4800,
+            "lane": 7,
             "width": 3,
             "type": 1
         },
         {
-            "tick": 5280,
-            "lane": 4,
+            "tick": 5760,
+            "lane": 7,
             "width": 3,
             "type": 1
         }
@@ -75,22 +51,24 @@
     "slides": [
         [
             {
-                "tick": 960,
-                "lane": 10,
+                "tick": 2880,
+                "lane": 7,
                 "width": 3,
                 "type": 1
             },
             {
-                "tick": 2400,
-                "lane": 10,
+                "tick": 3840,
+                "lane": 7,
                 "width": 3,
                 "type": 2
             }
         ]
     ],
     "bpms": [
+        [
             0,
             120.0
+        ]
     ],
     "barLengths": [
         [

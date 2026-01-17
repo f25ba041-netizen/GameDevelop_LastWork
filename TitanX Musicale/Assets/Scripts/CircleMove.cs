@@ -14,5 +14,17 @@ public class CircleMove : MonoBehaviour
     void Update()
     {
         rectTransform.localScale = rectTransform.localScale - (new Vector3(1,1,1) * Time.deltaTime / 2);
+        if(rectTransform.localScale.magnitude <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "PlayerAttack")
+        {
+            Destroy(collision.gameObject);
+        }
     }
 }

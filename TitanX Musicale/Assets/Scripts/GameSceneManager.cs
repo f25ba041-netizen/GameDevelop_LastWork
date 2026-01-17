@@ -1,7 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System;
+using UnityEngine.UIElements;
+using System.Linq;
+using Newtonsoft.Json;
+using UnityEditor.TerrainTools;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -30,11 +35,23 @@ public class GameSceneManager : MonoBehaviour
     public GameObject missilePrefab;
     public GameObject missilePos;
     public GameObject TitanX;
+    public GameObject circlePrefab;
     public Text scoreText;
     public NotesData notes;
     private float beamTimer = 0;
     private bool existBeam = false;
     private float bpm;
+    private float currentTime = 0f;
+    private float currentBeat = 0f;
+    private Beat beat;
+
+    private enum NoteType
+    {
+        None,
+        Attak,
+        Beam,
+        Missile,
+    }
 
     public void moveToRight(){
         axion.moveToRight();
@@ -103,14 +120,18 @@ public class GameSceneManager : MonoBehaviour
         resultPanel.SetActive(false);
 
         // 本番で適用
-        // musicID = GameManager.saveData.StatusID;
+        //musicID = GameManager.saveData.StatusID;
 
         // テスト用
+        /*
         musicID = StatusID.mtest;
 
         notes = GameManager.Instance.loadNotesData(musicID);
         Debug.Log(notes.bpms[1]);
-        bpm = notes.bpms[1];
+        */
+        notes = GameManager.Instance.notesData;
+        bpm = notes.bpms[0][1];
+        beat = new Beat();
         StartCoroutine(DelayMethod(3f , () => { // 3秒後に開始
             isPose = false;
         }));
@@ -123,7 +144,11 @@ public class GameSceneManager : MonoBehaviour
             poseGame();
         }
         if(isPose) return;
-        if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)){
+
+        currentTime += Time.deltaTime;
+        currentBeat = currentTime * (bpm * 8);
+
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)){
             moveToLeft();
         }
         if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)){
@@ -137,8 +162,162 @@ public class GameSceneManager : MonoBehaviour
             score -= (isInverse == isRight ? 20 : 0);
         }
         beamTimer += Time.deltaTime;
+
+        if (currentBeat >= beat.current.tick)
+        {
+            switch (beat.current.beatType)
+            {
+                case BeatType.Tap:
+                    Attack();
+                    break;
+                case BeatType.Critical:
+                    Spin();
+                    break;
+                case BeatType.Directional:
+                    Missile();
+                    break;
+                case BeatType.SlideStart:
+                    Beam();
+                    break;
+                case BeatType.SlideEnd:
+                    BeamEnd();
+                    break;
+            }
+            if (beat.IsEnd())
+            {
+                StartCoroutine(DelayMethod(1f, () => { // 1秒後にストーリーへ
+                    toStory();
+                }));
+            }
+            beat.Next();
+        }
     }
 
+    class Beat
+    {
+        public List<Note> flow;
+        public Note current = null;
+        public Note next = null;
+        private int currentIndex = 0;
+        public Beat()
+        {
+            flow = new List<Note>();
+            Init();
+        }
+
+        private void Init()
+        {
+            int safety = 0;
+            NotesData notes = JsonConvert.DeserializeObject<NotesData>(JsonConvert.SerializeObject(GameManager.Instance.notesData));
+            while (notes.taps.Count > 0 || notes.directionals.Count > 0 || notes.slides.Count > 0)
+            {
+                safety++;
+                if (safety > 10000)
+                {
+                    Debug.LogError("Infinite loop detected");
+                    break;
+                }
+
+                List<Note> tempList = new List<Note>();
+                Note slideEnd = null;
+                if(notes.taps.Count > 0)
+                {
+                    if(notes.taps[0].type == 1)
+                    {
+                        notes.taps[0].beatType = BeatType.Tap;
+                    }
+                    else
+                    {
+                        notes.taps[0].beatType = BeatType.Critical;
+                    }
+                    tempList.Add(notes.taps[0]);
+                }
+                if(notes.directionals.Count > 0)
+                {
+                    notes.directionals[0].beatType = BeatType.Directional;
+                    tempList.Add(notes.directionals[0]);
+                }
+                if(notes.slides.Count > 0)
+                {
+                    notes.slides[0][0].beatType = BeatType.SlideStart;
+                    notes.slides[0][1].beatType = BeatType.SlideEnd;
+                    tempList.Add(notes.slides[0][0]);
+                    slideEnd = notes.slides[0][1];
+                }
+
+                if (tempList.Count == 0)
+                {
+                    Debug.LogError("tempList is empty. Data broken?");
+                    break;
+                }
+
+                int minIndex = tempList
+                    .Select((note, index) => new { note.tick, index })
+                    .OrderBy(x => x.tick)
+                    .First()
+                    .index;
+
+                switch (tempList[minIndex].beatType)
+                {
+                    case BeatType.Tap:
+                        flow.Add(tempList[minIndex]);
+                        notes.taps.RemoveAt(0);
+                        break;
+                    case BeatType.Critical:
+                        flow.Add(tempList[minIndex]);
+                        notes.taps.RemoveAt(0);
+                        break;
+                    case BeatType.Directional:
+                        
+                        flow.Add(tempList[minIndex]);
+                        notes.directionals.RemoveAt(0);
+                        break;
+                    case BeatType.SlideStart:
+                        tempList[minIndex].tick -= (int) notes.bpms[0][1] * 8;
+                        flow.Add(tempList[minIndex]);
+                        flow.Add(slideEnd);
+                        notes.slides.RemoveAt(0);
+                        break;
+                    default:
+                        Debug.LogError("Unknown BeatType: " + tempList[minIndex].beatType);
+                        break;
+                }
+            }
+
+            if (flow.Count < 1) return;
+            current = flow[0];
+
+            if (flow.Count < 2) return;
+            next = flow[1];
+        }
+        
+        public void Next()
+        {
+            if (next != null)
+            {
+                current = next;
+            }
+            currentIndex++;
+            if(currentIndex + 1 < flow.Count)
+            {
+                next = flow[currentIndex + 1];
+            }
+            else
+            {
+                next = null;
+            }
+        }
+        public bool IsEnd()
+        {
+            if (currentIndex >= flow.Count - 1) return true;
+            return false;
+        }
+    }
+
+    void Attack()
+    {
+        GameObject circle = Instantiate(circlePrefab, TitanX.transform.position, Quaternion.identity);
+    }
     void Beam(){
         // チャージ開始から再生するためチャージ分の時間を考える
         // チャージには1秒かかる
@@ -171,5 +350,11 @@ public class GameSceneManager : MonoBehaviour
         StartCoroutine(DelayMethod(0.09f , () => {
             TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
         }));
+    }
+
+    private void toStory()
+    {
+        GameManager.Instance.save();
+        GameManager.Instance.loadScene("story");
     }
 }
