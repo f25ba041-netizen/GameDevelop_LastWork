@@ -62,6 +62,12 @@ public class GameSceneManager : MonoBehaviour
     private float currentBeat = 0f;
     private Beat beat;
     private List<CircleMove> currentCircleList = new List<CircleMove>();
+    public AudioSource ButtonSE;
+    public AudioSource BGM;
+    public AudioSource BeamSE;
+    public AudioSource DamageSE;
+    public AudioSource AttackSE;
+    public AudioSource AttackMissSE;
 
     private enum NoteType
     {
@@ -83,21 +89,35 @@ public class GameSceneManager : MonoBehaviour
 
     public void attack(){
         currentCircleList.RemoveAll(item => item == null);
-        if (currentCircleList.Count <= 0) return;
+        if (currentCircleList.Count <= 0) {
+            AttackMissSE.Play();
+            return;
+        }
         float circleTimer = currentCircleList[0].timer;
-        if (circleTimer < 0.8) return;
+        if (circleTimer < 0.8) {
+            AttackMissSE.Play();
+            return;
+        }
+
         // +- 0.2 ミス
         Destroy(currentCircleList[0].transform.gameObject);
-        if (circleTimer > 1.1 || circleTimer < 0.9) return;
+        if (circleTimer > 1.1 || circleTimer < 0.9) {
+            AttackMissSE.Play();
+            return;
+        }
+
         // +- 0.1 成功
         axion.attack(); // エフェクト
+        AttackSE.Play();
         score += 100;
         if (circleTimer > 1.14 || circleTimer < 0.96) return;
+
         // +- 0.04 パーフェクト
         score += 50;
     }
 
     public void pauseGame(){
+        ButtonSE.Play();
         if (beat.IsEnd()) return;
         if (isPause) return;
         isPause = true;
@@ -105,18 +125,30 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void settingButton(){
-        GameManager.Instance.loadScene("Setting");
+        ButtonSE.Play();
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            GameManager.Instance.loadScene("Setting");
+        }));
+        
     }
 
     public void restartButton(){
-        GameManager.Instance.loadScene("Game");
+        ButtonSE.Play();
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            GameManager.Instance.loadScene("Game");
+        }));
+        
     }
 
     public void titleBackButton(){
-        GameManager.Instance.loadScene("Title");
+        ButtonSE.Play();
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            GameManager.Instance.loadScene("Title");
+        }));
     }
 
     public void continueButton(){
+        ButtonSE.Play();
         countdownPanel.SetActive(true);
         pausePanel.SetActive(false);
         countdownText.text = "3";
@@ -133,8 +165,11 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void nextButton(){
+        ButtonSE.Play();
         GameManager.Instance.selectStory(result);
-        GameManager.Instance.loadScene("Story");
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            GameManager.Instance.loadScene("Story");
+        }));
     }
 
     private void evalScore(){
@@ -166,10 +201,19 @@ public class GameSceneManager : MonoBehaviour
         pausePanel.SetActive(false);
         countdownPanel.SetActive(false);
         resultPanel.SetActive(false);
+
+        // 曲のIDを見てモデルをボロボロにするか決める
+        //
+        // ここにコードを埋める
+        //
+        // if ( GameManager.Instance.saveData.statusID = StatusID.XXXXXXXXXX ) axion.toBroken();
+
         NotesData notes = GameManager.Instance.notesData;
+        BGM.clip = Resources.Load<AudioClip>($"MusicData/{notes.metadata.title}"); // 音楽ファイル読み込み
         bpm = notes.bpms[0][1];
         beat = new Beat();
         StartCoroutine(DelayMethod(3f , () => { // 3秒後に開始
+            BGM.Play();
             isPause = false;
         }));
     }
@@ -197,6 +241,7 @@ public class GameSceneManager : MonoBehaviour
         if (beamTimer >= 0.1f && existBeam) {
             beamTimer = 0;
             score -= (isInverse == isRight ? 20 : 0);
+            if (isInverse == isRight) DamageSE.Play();
         }
         beamTimer += Time.deltaTime;
 
@@ -378,6 +423,7 @@ public class GameSceneManager : MonoBehaviour
         // チャージには1秒かかる
         beamParticle.Play();
         StartCoroutine(DelayMethod(1 , () => {
+            BeamSE.Play();
             existBeam = true;
         }));
     }

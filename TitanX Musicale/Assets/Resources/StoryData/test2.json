@@ -1,0 +1,26 @@
+{
+    "scenes":[
+        {
+            "image": "StoryData/test001",
+            "serif": [
+                {
+                    "speaker" : "タイタンX",
+                    "text" : "タイタンXでござる"
+                },
+                {
+                    "speaker" : "アクシオン",
+                    "text" : "ぴよ～～～～～～"
+                }
+            ]
+        },
+        {
+            "image": "StoryData/test001.png",
+            "serif": [
+                {
+                    "speaker" : "",
+                    "text" : "唐揚げｱｧｧｧ------wwwwwwwwwwwwwwwwww"
+                }
+            ]
+        }
+    ]
+}
