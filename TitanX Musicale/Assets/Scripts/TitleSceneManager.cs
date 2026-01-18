@@ -13,6 +13,7 @@ public class TitleSceneManager : MonoBehaviour
     public GameObject confirmWindow;
     public GameObject continueButtonObject;
     public Image fadePanel;
+    public AudioSource ButtonSE;
 
     void Start()
     {
@@ -55,6 +56,7 @@ public class TitleSceneManager : MonoBehaviour
     }
 
     public void startButton(){
+        ButtonSE.Play();
         if (GameManager.Instance.saveData!=null) {
             confirmWindow.SetActive(true);
             return;
@@ -64,11 +66,13 @@ public class TitleSceneManager : MonoBehaviour
     }
 
     public void confirmYesButton(){
+        ButtonSE.Play();
         GameManager.Instance.createNewData();
         StartCoroutine(FadeOutAndLoadScene("Story"));
     }
 
     public void confirmNoButton(){
+        ButtonSE.Play();
         confirmWindow.SetActive(false);
     }
 
@@ -95,6 +99,7 @@ public class TitleSceneManager : MonoBehaviour
     }
 
     public void continueButton(){
+        ButtonSE.Play();
         if (GameManager.Instance.saveData == null) {GameManager.Instance.createNewData();}
         if (GameManager.Instance.saveData.gameStatus == GameStatus.Story){
             StartCoroutine(FadeOutAndLoadScene("Story"));
@@ -107,6 +112,7 @@ public class TitleSceneManager : MonoBehaviour
     }
 
     public void settingButton(){
+        ButtonSE.Play();
         StartCoroutine(FadeOutAndLoadScene("Setting"));
     }
 }

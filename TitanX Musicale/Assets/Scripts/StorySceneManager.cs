@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 [System.Serializable]
 public class StoryData
@@ -27,6 +30,13 @@ public class StorySceneManager : MonoBehaviour
     public Image background;
     public Text speaker;
     public Text subtitle;
+    public AudioSource ButtonSE;
+
+    private IEnumerator DelayMethod(float waitTime, Action action)
+    { // 指定時間後に渡した関数が実行される
+        yield return new WaitForSeconds(waitTime);
+        action();
+    }
 
     public StorySceneManager(){
         StoryID = GameManager.Instance.saveData.statusID.ToString();
@@ -53,22 +63,25 @@ public class StorySceneManager : MonoBehaviour
     }
 
     private void toBattle(){
-        GameManager.Instance.selectMusic();
-        if (GameManager.Instance.notesData == null){ // 選曲をしてエンディングだったとき
-            GameManager.Instance.saveData = null;
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            if (!GameManager.Instance.selectMusic()){ // 選曲をしてエンディングだったとき
+                GameManager.Instance.saveData = null;
+                GameManager.Instance.save();
+                GameManager.Instance.loadScene("title");
+                return;
+            }
             GameManager.Instance.save();
-            GameManager.Instance.loadScene("title");
-            return;
-        }
-        GameManager.Instance.save();
-        GameManager.Instance.loadScene("game");
+            GameManager.Instance.loadScene("game");
+        })); 
     }
 
     public void skipButton(){
+        ButtonSE.Play();
         toBattle();
     }
 
     public void nextScene(){
+        ButtonSE.Play();
         currentSerif++;
         if (currentSerif >= storyData.scenes[currentScene].serif.Length) {
             currentScene++;

@@ -8,14 +8,32 @@ using System.Linq;
 using Newtonsoft.Json;
 using UnityEditor.TerrainTools;
 
+public enum Score
+{
+    S,
+    A,
+    B,
+    C,
+}
+
 public class GameSceneManager : MonoBehaviour
 {
     public ParticleSystem beamParticle;
-    public GameObject posePanel;
+    public GameObject pausePanel;
     public GameObject countdownPanel;
     public Text countdownText;
     public GameObject resultPanel;
     public Text resultEvalText;
+    private Score _result = Score.C;
+    public Score result{
+        get{
+            return _result;
+        }
+        set{
+            _result = value;
+            resultEvalText.text = $"評価 : {_result}";
+        }
+    }
     public StatusID musicID;
     private int _score = 0;
     public int score{
@@ -28,8 +46,8 @@ public class GameSceneManager : MonoBehaviour
             return _score;
         }
     }
-    private bool isPose = true;
     private bool isResult = false;
+    public bool isPause = true;
     public AxionMovement axion;
     public bool isRight = false;
     public bool isInverse = false;
@@ -38,7 +56,6 @@ public class GameSceneManager : MonoBehaviour
     public GameObject TitanX;
     public GameObject circlePrefab;
     public Text scoreText;
-    public NotesData notes;
     private float beamTimer = 0;
     private bool existBeam = false;
     private float bpm;
@@ -46,6 +63,13 @@ public class GameSceneManager : MonoBehaviour
     private float currentBeat = 0f;
     private Beat beat;
     private EvaluationType evaluation = EvaluationType.None;
+    private List<CircleMove> currentCircleList = new List<CircleMove>();
+    public AudioSource ButtonSE;
+    public AudioSource BGM;
+    public AudioSource BeamSE;
+    public AudioSource DamageSE;
+    public AudioSource AttackSE;
+    public AudioSource AttackMissSE;
 
     public enum EvaluationType
     {
@@ -67,36 +91,73 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void attack(){
-        axion.attack();
-        // まだエフェクトのみ 判定の処理を付ける
-    }
+        currentCircleList.RemoveAll(item => item == null);
+        if (currentCircleList.Count <= 0) {
+            AttackMissSE.Play();
+            return;
+        }
+        float circleTimer = currentCircleList[0].timer;
+        if (circleTimer < 0.8) {
+            AttackMissSE.Play();
+            return;
+        }
 
-    public void poseGame(){
-        if (isPose) return;
+        // +- 0.2 ミス
+        Destroy(currentCircleList[0].transform.gameObject);
+        if (circleTimer > 1.1 || circleTimer < 0.9) {
+            AttackMissSE.Play();
+            return;
+        }
+
+        // +- 0.1 成功
+        axion.attack(); // エフェクト
+        AttackSE.Play();
+        score += 100;
+        if (circleTimer > 1.14 || circleTimer < 0.96) return;
+
+        // +- 0.04 パーフェクト
+        score += 50;
+    }
+    public void pauseGame(){
+        ButtonSE.Play();
+        if (beat.IsEnd()) return;
+        if (isPause) return;
         Time.timeScale = 0f;
-        isPose = true;
-        posePanel.SetActive(true);
+        isPause = true;
+        pausePanel.SetActive(true);
     }
 
     public void settingButton(){
-        GameManager.Instance.loadScene("Setting");
+        ButtonSE.Play();
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            GameManager.Instance.loadScene("Setting");
+        }));
+        
     }
 
     public void restartButton(){
-        GameManager.Instance.loadScene("Game");
+        ButtonSE.Play();
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            GameManager.Instance.loadScene("Game");
+        }));
+        
     }
 
     public void titleBackButton(){
-        GameManager.Instance.loadScene("Title");
+        ButtonSE.Play();
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            GameManager.Instance.loadScene("Title");
+        }));
     }
 
     public void continueButton(){
+        ButtonSE.Play();
         countdownPanel.SetActive(true);
-        posePanel.SetActive(false);
+        pausePanel.SetActive(false);
         countdownText.text = "3";
         StartCoroutine(DelayMethod(3.0f , () => {
             Time.timeScale = 1f;
-            isPose = false;
+            isPause = false;
             countdownPanel.SetActive(false);
         }));
         StartCoroutine(DelayMethod(2.0f , () => {
@@ -108,8 +169,28 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void nextButton(){
-        GameManager.Instance.selectStory(evaluation);
-        GameManager.Instance.loadScene("Story");
+        ButtonSE.Play();
+        GameManager.Instance.selectStory(result);
+        StartCoroutine(DelayMethod(0.1f,()=>{ // SE分の遅延
+            GameManager.Instance.loadScene("Story");
+        }));
+    }
+
+    private void evalScore(){
+        float rate = (float)score/beat.maxScore;
+        if (rate > 0.8){
+            result = Score.S;
+            return;
+        }
+        if (rate > 0.6){
+            result = Score.A;
+            return;
+        }
+        if (rate > 0.4){
+            result = Score.B;
+            return;
+        }
+        result = Score.C;
     }
 
     private IEnumerator DelayMethod(float waitTime, Action action)
@@ -121,25 +202,25 @@ public class GameSceneManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        posePanel.SetActive(false);
+        pausePanel.SetActive(false);
         countdownPanel.SetActive(false);
         resultPanel.SetActive(false);
 
-        // 本番で適用
-        //musicID = GameManager.saveData.StatusID;
+        // 曲のIDを見てモデルをボロボロにするか決める
+        //
+        // ここにコードを埋める
+        //
+        // if ( GameManager.Instance.saveData.statusID = StatusID.XXXXXXXXXX ) axion.toBroken();
 
-        // テスト用
-        /*
-        musicID = StatusID.mtest;
-
-        notes = GameManager.Instance.loadNotesData(musicID);
-        Debug.Log(notes.bpms[1]);
-        */
-        notes = GameManager.Instance.notesData;
+        NotesData notes = GameManager.Instance.notesData;
+        BGM.clip = Resources.Load<AudioClip>($"MusicData/{notes.metadata.title}"); // 音楽ファイル読み込み
         bpm = notes.bpms[0][1];
         beat = new Beat();
         StartCoroutine(DelayMethod(3f , () => { // 3秒後に開始
-            isPose = false;
+            isPause = false;
+        }));
+        StartCoroutine(DelayMethod(3f + GameManager.Instance.settingData.delay * 2 , () => { // 遅延を反映させてBGMを再生
+            BGM.Play();
         }));
     }
 
@@ -147,9 +228,9 @@ public class GameSceneManager : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape)){
-            poseGame();
+            pauseGame();
         }
-        if(isPose) return;
+        if(isPause) return;
 
         currentTime += Time.deltaTime;
         currentBeat = currentTime * (bpm * 8);
@@ -166,9 +247,19 @@ public class GameSceneManager : MonoBehaviour
         if (beamTimer >= 0.1f && existBeam) {
             beamTimer = 0;
             score -= (isInverse == isRight ? 20 : 0);
+            if (isInverse == isRight) DamageSE.Play();
         }
         beamTimer += Time.deltaTime;
 
+        if (beat.IsEnd())
+        {
+            StartCoroutine(DelayMethod(2f, () => { // 2秒後にリザルトへ
+                evalScore();
+                resultPanel.SetActive(true);
+                isPause = true;
+            }));
+            return;
+        }
         if (beat.current != null)
         {
             if (currentBeat >= beat.current.tick)
@@ -210,6 +301,7 @@ public class GameSceneManager : MonoBehaviour
         public Note current = null;
         public Note next = null;
         private int currentIndex = 0;
+        public int maxScore;
         public Beat()
         {
             flow = new List<Note>();
@@ -219,8 +311,19 @@ public class GameSceneManager : MonoBehaviour
         private void Init()
         {
             int safety = 0;
-            NotesData _notes = JsonConvert.DeserializeObject<NotesData>(JsonConvert.SerializeObject(GameManager.Instance.notesData));
-            while (_notes.taps.Count > 0 || _notes.directionals.Count > 0 || _notes.slides.Count > 0)
+            NotesData notes = JsonConvert.DeserializeObject<NotesData>(JsonConvert.SerializeObject(GameManager.Instance.notesData));
+            // タップからフリックに対応するノーツを削除
+            foreach(var note in notes.directionals){
+                for(int i=0;i<notes.taps.Count;i++){
+                    if(notes.taps[i].tick != note.tick)continue;
+                    notes.taps.RemoveAt(i);
+                    break;
+                }
+            }
+
+            maxScore = notes.taps.Count * 150;
+
+            while (notes.taps.Count > 0 || notes.directionals.Count > 0 || notes.slides.Count > 0)
             {
                 safety++;
                 if (safety > 10000)
@@ -231,29 +334,29 @@ public class GameSceneManager : MonoBehaviour
 
                 List<Note> tempList = new List<Note>();
                 Note slideEnd = null;
-                if(_notes.taps.Count > 0)
+                if(notes.taps.Count > 0)
                 {
-                    if(_notes.taps[0].type == 1)
+                    if(notes.taps[0].type == 1)
                     {
-                        _notes.taps[0].beatType = BeatType.Tap;
+                        notes.taps[0].beatType = BeatType.Tap;
                     }
                     else
                     {
-                        _notes.taps[0].beatType = BeatType.Critical;
+                        notes.taps[0].beatType = BeatType.Critical;
                     }
-                    tempList.Add(_notes.taps[0]);
+                    tempList.Add(notes.taps[0]);
                 }
-                if(_notes.directionals.Count > 0)
+                if(notes.directionals.Count > 0)
                 {
-                    _notes.directionals[0].beatType = BeatType.Directional;
-                    tempList.Add(_notes.directionals[0]);
+                    notes.directionals[0].beatType = BeatType.Directional;
+                    tempList.Add(notes.directionals[0]);
                 }
-                if(_notes.slides.Count > 0)
+                if(notes.slides.Count > 0)
                 {
-                    _notes.slides[0][0].beatType = BeatType.SlideStart;
-                    _notes.slides[0][1].beatType = BeatType.SlideEnd;
-                    tempList.Add(_notes.slides[0][0]);
-                    slideEnd = _notes.slides[0][1];
+                    notes.slides[0][0].beatType = BeatType.SlideStart;
+                    notes.slides[0][1].beatType = BeatType.SlideEnd;
+                    tempList.Add(notes.slides[0][0]);
+                    slideEnd = notes.slides[0][1];
                 }
 
                 if (tempList.Count == 0)
@@ -271,23 +374,24 @@ public class GameSceneManager : MonoBehaviour
                 switch (tempList[minIndex].beatType)
                 {
                     case BeatType.Tap:
+                        tempList[minIndex].tick -= (int) notes.bpms[0][1] * 8; // 開始タイミングの調整
                         flow.Add(tempList[minIndex]);
-                        _notes.taps.RemoveAt(0);
+                        notes.taps.RemoveAt(0);
                         break;
                     case BeatType.Critical:
                         flow.Add(tempList[minIndex]);
-                        _notes.taps.RemoveAt(0);
+                        notes.taps.RemoveAt(0);
                         break;
                     case BeatType.Directional:
-                        
+                        tempList[minIndex].tick -= (int) (notes.bpms[0][1] * 8 * 0.4); // 開始タイミングの調整
                         flow.Add(tempList[minIndex]);
-                        _notes.directionals.RemoveAt(0);
+                        notes.directionals.RemoveAt(0);
                         break;
                     case BeatType.SlideStart:
-                        tempList[minIndex].tick -= (int)_notes.bpms[0][1] * 8;
+                        tempList[minIndex].tick -= (int) notes.bpms[0][1] * 8; // 開始タイミングの調整
                         flow.Add(tempList[minIndex]);
                         flow.Add(slideEnd);
-                        _notes.slides.RemoveAt(0);
+                        notes.slides.RemoveAt(0);
                         break;
                     default:
                         Debug.LogError("Unknown BeatType: " + tempList[minIndex].beatType);
@@ -318,20 +422,22 @@ public class GameSceneManager : MonoBehaviour
         }
         public bool IsEnd()
         {
-            if (currentIndex >= flow.Count - 1) return true;
+            if (currentIndex >= flow.Count) return true;
             return false;
         }
     }
 
     void Attack()
     {
-        GameObject circle = Instantiate(circlePrefab, TitanX.transform.position, Quaternion.identity);
+        GameObject circle = Instantiate(circlePrefab);
+        currentCircleList.Add(circle.GetComponent<CircleMove>());
     }
     void Beam(){
         // チャージ開始から再生するためチャージ分の時間を考える
         // チャージには1秒かかる
         beamParticle.Play();
         StartCoroutine(DelayMethod(1 , () => {
+            BeamSE.Play();
             existBeam = true;
         }));
     }
