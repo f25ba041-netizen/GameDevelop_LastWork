@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class CircleMove : MonoBehaviour
 {
+
     private GameSceneManager manager;
     RectTransform rectTransform;
     public float timer = 0;
@@ -18,6 +19,7 @@ public class CircleMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (manager.isPause) {
             return;
         }
@@ -26,14 +28,6 @@ public class CircleMove : MonoBehaviour
         if(timer > 1.2)
         {
             Destroy(gameObject);
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "PlayerAttack")
-        {
-            Destroy(collision.gameObject);
         }
     }
 }

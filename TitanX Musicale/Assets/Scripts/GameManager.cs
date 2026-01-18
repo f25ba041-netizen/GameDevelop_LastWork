@@ -109,6 +109,7 @@ public class GameManager
     public void selectStory(Score score){
         // !
         // ここにストーリー選択の処理を書く
+
         // !
 
         //テスト用
