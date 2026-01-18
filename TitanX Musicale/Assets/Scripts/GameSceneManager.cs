@@ -37,7 +37,6 @@ public class GameSceneManager : MonoBehaviour
     public GameObject TitanX;
     public GameObject circlePrefab;
     public Text scoreText;
-    public NotesData notes;
     private float beamTimer = 0;
     private bool existBeam = false;
     private float bpm;
@@ -132,18 +131,7 @@ public class GameSceneManager : MonoBehaviour
         pausePanel.SetActive(false);
         countdownPanel.SetActive(false);
         resultPanel.SetActive(false);
-
-        // 本番で適用
-        //musicID = GameManager.saveData.StatusID;
-
-        // テスト用
-        /*
-        musicID = StatusID.mtest;
-
-        notes = GameManager.Instance.loadNotesData(musicID);
-        Debug.Log(notes.bpms[1]);
-        */
-        notes = GameManager.Instance.notesData;
+        NotesData notes = GameManager.Instance.notesData;
         bpm = notes.bpms[0][1];
         beat = new Beat();
         StartCoroutine(DelayMethod(3f , () => { // 3秒後に開始
@@ -378,11 +366,5 @@ public class GameSceneManager : MonoBehaviour
         StartCoroutine(DelayMethod(0.09f , () => {
             TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
         }));
-    }
-
-    private void toStory()
-    {
-        GameManager.Instance.save();
-        GameManager.Instance.loadScene("story");
     }
 }

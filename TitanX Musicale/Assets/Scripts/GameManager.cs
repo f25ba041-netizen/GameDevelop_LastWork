@@ -37,7 +37,13 @@ public class GameManager
         }
     }
 
-    public NotesData notesData;
+    private NotesData _notesData;
+    public NotesData notesData{
+        get{
+            if (_notesData == null) _notesData = loadNotesData($"{saveData.statusID}");
+            return _notesData;
+        }
+    }
 
     public string beforeSceneName = "";
 
@@ -74,7 +80,7 @@ public class GameManager
         SceneManager.LoadScene(nextScene);
     }
 
-    public NotesData loadNotesData(String MusicID){
+    private NotesData loadNotesData(String MusicID){
         TextAsset asset = Resources.Load<TextAsset>($"MusicData/{MusicID}");
         string jsonText = asset?.text;
         if(jsonText == null)
@@ -85,16 +91,25 @@ public class GameManager
         return JsonConvert.DeserializeObject<NotesData>(jsonText);
     }
 
-    public void selectMusic(){ // 選曲が失敗したとき(=エンディングのとき)falseを返す
+    public bool selectMusic(){ // 選曲が失敗したとき(=エンディングのとき)falseを返す
         // !
         // ここに選曲処理を書く
-        notesData = loadNotesData($"music_{saveData.statusID}");
+        // !
+
+        //テスト用
+        saveData.statusID = StatusID.music_test;
+
+        _notesData = loadNotesData($"{saveData.statusID}");
+        saveData.gameStatus = GameStatus.Game;
+        return true;
     }
 
     public void selectStory(){
         // !
         // ここにストーリー選択の処理を書く
         // !
+
+        saveData.gameStatus = GameStatus.Story;
     }
 }
 
@@ -114,6 +129,7 @@ public enum GameStatus
 public enum StatusID
 {
     test,
+    music_test,
 }
 
 [System.Serializable]
