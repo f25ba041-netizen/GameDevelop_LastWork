@@ -91,9 +91,10 @@ public class GameManager
         notesData = loadNotesData($"music_{saveData.statusID}");
     }
 
-    public void selectStory(){
+    public void selectStory(GameSceneManager.EvaluationType evaluation){
         // !
         // ここにストーリー選択の処理を書く
+
         // !
     }
 }

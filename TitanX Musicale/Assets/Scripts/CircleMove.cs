@@ -3,28 +3,23 @@ using UnityEngine.UI;
 
 public class CircleMove : MonoBehaviour
 {
-    RectTransform rectTransform;
+    public float time = 2f;
+    private RectTransform rectTransform;
+    private Vector3 scale = Vector3.one;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = new Vector3(0,250,0);
+        scale = rectTransform.localScale;
     }
     // Update is called once per frame
     void Update()
     {
-        rectTransform.localScale = rectTransform.localScale - (new Vector3(1,1,1) * Time.deltaTime / 2);
-        if(rectTransform.localScale.magnitude <= 0)
+        rectTransform.localScale = rectTransform.localScale - (scale * Time.deltaTime / time);
+        if(rectTransform.localScale.x <= 0f)
         {
             Destroy(gameObject);
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "PlayerAttack")
-        {
-            Destroy(collision.gameObject);
         }
     }
 }

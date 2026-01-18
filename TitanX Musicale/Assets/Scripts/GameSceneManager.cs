@@ -29,6 +29,7 @@ public class GameSceneManager : MonoBehaviour
         }
     }
     private bool isPose = true;
+    private bool isResult = false;
     public AxionMovement axion;
     public bool isRight = false;
     public bool isInverse = false;
@@ -44,13 +45,15 @@ public class GameSceneManager : MonoBehaviour
     private float currentTime = 0f;
     private float currentBeat = 0f;
     private Beat beat;
+    private EvaluationType evaluation = EvaluationType.None;
 
-    private enum NoteType
+    public enum EvaluationType
     {
         None,
-        Attak,
-        Beam,
-        Missile,
+        C,
+        B,
+        A,
+        S,
     }
 
     public void moveToRight(){
@@ -69,6 +72,8 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void poseGame(){
+        if (isPose) return;
+        Time.timeScale = 0f;
         isPose = true;
         posePanel.SetActive(true);
     }
@@ -90,6 +95,7 @@ public class GameSceneManager : MonoBehaviour
         posePanel.SetActive(false);
         countdownText.text = "3";
         StartCoroutine(DelayMethod(3.0f , () => {
+            Time.timeScale = 1f;
             isPose = false;
             countdownPanel.SetActive(false);
         }));
@@ -102,13 +108,13 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void nextButton(){
-        GameManager.Instance.selectStory();
+        GameManager.Instance.selectStory(evaluation);
         GameManager.Instance.loadScene("Story");
     }
 
     private IEnumerator DelayMethod(float waitTime, Action action)
     { // 指定時間後に渡した関数が実行される
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSecondsRealtime(waitTime);
         action();
     }
 
@@ -163,34 +169,39 @@ public class GameSceneManager : MonoBehaviour
         }
         beamTimer += Time.deltaTime;
 
-        if (currentBeat >= beat.current.tick)
+        if (beat.current != null)
         {
-            switch (beat.current.beatType)
+            if (currentBeat >= beat.current.tick)
             {
-                case BeatType.Tap:
-                    Attack();
-                    break;
-                case BeatType.Critical:
-                    Spin();
-                    break;
-                case BeatType.Directional:
-                    Missile();
-                    break;
-                case BeatType.SlideStart:
-                    Beam();
-                    break;
-                case BeatType.SlideEnd:
-                    BeamEnd();
-                    break;
+                switch (beat.current.beatType)
+                {
+                    case BeatType.Tap:
+                        Attack();
+                        break;
+                    case BeatType.Critical:
+                        Spin();
+                        break;
+                    case BeatType.Directional:
+                        Missile();
+                        break;
+                    case BeatType.SlideStart:
+                        Beam();
+                        break;
+                    case BeatType.SlideEnd:
+                        BeamEnd();
+                        break;
+                }
+                if (beat.IsEnd())
+                {
+                    StartCoroutine(DelayMethod(1f, () => { // 1秒後にリザルト画面
+                        GameManager.Instance.save();
+                        resultPanel.SetActive(true);
+                    }));
+                }
+                beat.Next();
             }
-            if (beat.IsEnd())
-            {
-                StartCoroutine(DelayMethod(1f, () => { // 1秒後にストーリーへ
-                    toStory();
-                }));
-            }
-            beat.Next();
         }
+        
     }
 
     class Beat
@@ -208,8 +219,8 @@ public class GameSceneManager : MonoBehaviour
         private void Init()
         {
             int safety = 0;
-            NotesData notes = JsonConvert.DeserializeObject<NotesData>(JsonConvert.SerializeObject(GameManager.Instance.notesData));
-            while (notes.taps.Count > 0 || notes.directionals.Count > 0 || notes.slides.Count > 0)
+            NotesData _notes = JsonConvert.DeserializeObject<NotesData>(JsonConvert.SerializeObject(GameManager.Instance.notesData));
+            while (_notes.taps.Count > 0 || _notes.directionals.Count > 0 || _notes.slides.Count > 0)
             {
                 safety++;
                 if (safety > 10000)
@@ -220,29 +231,29 @@ public class GameSceneManager : MonoBehaviour
 
                 List<Note> tempList = new List<Note>();
                 Note slideEnd = null;
-                if(notes.taps.Count > 0)
+                if(_notes.taps.Count > 0)
                 {
-                    if(notes.taps[0].type == 1)
+                    if(_notes.taps[0].type == 1)
                     {
-                        notes.taps[0].beatType = BeatType.Tap;
+                        _notes.taps[0].beatType = BeatType.Tap;
                     }
                     else
                     {
-                        notes.taps[0].beatType = BeatType.Critical;
+                        _notes.taps[0].beatType = BeatType.Critical;
                     }
-                    tempList.Add(notes.taps[0]);
+                    tempList.Add(_notes.taps[0]);
                 }
-                if(notes.directionals.Count > 0)
+                if(_notes.directionals.Count > 0)
                 {
-                    notes.directionals[0].beatType = BeatType.Directional;
-                    tempList.Add(notes.directionals[0]);
+                    _notes.directionals[0].beatType = BeatType.Directional;
+                    tempList.Add(_notes.directionals[0]);
                 }
-                if(notes.slides.Count > 0)
+                if(_notes.slides.Count > 0)
                 {
-                    notes.slides[0][0].beatType = BeatType.SlideStart;
-                    notes.slides[0][1].beatType = BeatType.SlideEnd;
-                    tempList.Add(notes.slides[0][0]);
-                    slideEnd = notes.slides[0][1];
+                    _notes.slides[0][0].beatType = BeatType.SlideStart;
+                    _notes.slides[0][1].beatType = BeatType.SlideEnd;
+                    tempList.Add(_notes.slides[0][0]);
+                    slideEnd = _notes.slides[0][1];
                 }
 
                 if (tempList.Count == 0)
@@ -261,22 +272,22 @@ public class GameSceneManager : MonoBehaviour
                 {
                     case BeatType.Tap:
                         flow.Add(tempList[minIndex]);
-                        notes.taps.RemoveAt(0);
+                        _notes.taps.RemoveAt(0);
                         break;
                     case BeatType.Critical:
                         flow.Add(tempList[minIndex]);
-                        notes.taps.RemoveAt(0);
+                        _notes.taps.RemoveAt(0);
                         break;
                     case BeatType.Directional:
                         
                         flow.Add(tempList[minIndex]);
-                        notes.directionals.RemoveAt(0);
+                        _notes.directionals.RemoveAt(0);
                         break;
                     case BeatType.SlideStart:
-                        tempList[minIndex].tick -= (int) notes.bpms[0][1] * 8;
+                        tempList[minIndex].tick -= (int)_notes.bpms[0][1] * 8;
                         flow.Add(tempList[minIndex]);
                         flow.Add(slideEnd);
-                        notes.slides.RemoveAt(0);
+                        _notes.slides.RemoveAt(0);
                         break;
                     default:
                         Debug.LogError("Unknown BeatType: " + tempList[minIndex].beatType);
@@ -293,10 +304,8 @@ public class GameSceneManager : MonoBehaviour
         
         public void Next()
         {
-            if (next != null)
-            {
-                current = next;
-            }
+            current = next;
+
             currentIndex++;
             if(currentIndex + 1 < flow.Count)
             {
@@ -350,11 +359,5 @@ public class GameSceneManager : MonoBehaviour
         StartCoroutine(DelayMethod(0.09f , () => {
             TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
         }));
-    }
-
-    private void toStory()
-    {
-        GameManager.Instance.save();
-        GameManager.Instance.loadScene("story");
     }
 }
