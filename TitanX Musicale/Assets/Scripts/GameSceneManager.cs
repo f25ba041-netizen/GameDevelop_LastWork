@@ -8,6 +8,14 @@ using System.Linq;
 using Newtonsoft.Json;
 using UnityEditor.TerrainTools;
 
+public enum Score
+{
+    S,
+    A,
+    B,
+    C,
+}
+
 public class GameSceneManager : MonoBehaviour
 {
     public ParticleSystem beamParticle;
@@ -16,6 +24,16 @@ public class GameSceneManager : MonoBehaviour
     public Text countdownText;
     public GameObject resultPanel;
     public Text resultEvalText;
+    private Score _result = Score.C;
+    public Score result{
+        get{
+            return _result;
+        }
+        set{
+            _result = value;
+            resultEvalText.text = $"評価 : {_result}";
+        }
+    }
     public StatusID musicID;
     private int _score = 0;
     public int score{
@@ -115,8 +133,25 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void nextButton(){
-        GameManager.Instance.selectStory();
+        GameManager.Instance.selectStory(result);
         GameManager.Instance.loadScene("Story");
+    }
+
+    private void evalScore(){
+        float rate = (float)score/beat.maxScore;
+        if (rate > 0.8){
+            result = Score.S;
+            return;
+        }
+        if (rate > 0.6){
+            result = Score.A;
+            return;
+        }
+        if (rate > 0.4){
+            result = Score.B;
+            return;
+        }
+        result = Score.C;
     }
 
     private IEnumerator DelayMethod(float waitTime, Action action)
@@ -168,6 +203,7 @@ public class GameSceneManager : MonoBehaviour
         if (beat.IsEnd())
         {
             StartCoroutine(DelayMethod(2f, () => { // 2秒後にリザルトへ
+                evalScore();
                 resultPanel.SetActive(true);
                 isPause = true;
             }));
@@ -204,6 +240,7 @@ public class GameSceneManager : MonoBehaviour
         public Note current = null;
         public Note next = null;
         private int currentIndex = 0;
+        public int maxScore;
         public Beat()
         {
             flow = new List<Note>();
@@ -222,6 +259,8 @@ public class GameSceneManager : MonoBehaviour
                     break;
                 }
             }
+
+            maxScore = notes.taps.Count * 150;
 
             while (notes.taps.Count > 0 || notes.directionals.Count > 0 || notes.slides.Count > 0)
             {

@@ -40,6 +40,7 @@ public class GameManager
     private NotesData _notesData;
     public NotesData notesData{
         get{
+            // 続きからで起動したとき、ノーツのデータがまだ読み込まれていない可能性がある
             if (_notesData == null) _notesData = loadNotesData($"{saveData.statusID}");
             return _notesData;
         }
@@ -97,6 +98,7 @@ public class GameManager
         // !
 
         //テスト用
+        if (saveData.statusID == StatusID.test2) return false;
         saveData.statusID = StatusID.music_test;
 
         _notesData = loadNotesData($"{saveData.statusID}");
@@ -104,10 +106,14 @@ public class GameManager
         return true;
     }
 
-    public void selectStory(){
+    public void selectStory(Score score){
         // !
         // ここにストーリー選択の処理を書く
         // !
+
+        //テスト用
+        if (saveData.statusID == StatusID.music_test) saveData.statusID = StatusID.test2;
+        else saveData.statusID = StatusID.test;
 
         saveData.gameStatus = GameStatus.Story;
     }
@@ -129,6 +135,7 @@ public enum GameStatus
 public enum StatusID
 {
     test,
+    test2,
     music_test,
 }
 
@@ -148,7 +155,7 @@ public class SaveData{
 [System.Serializable]
 public class SettingData
 {
-    private float _bgmVolume;
+    private float _bgmVolume = 1;
     public float bgmVolume
     {
         get
@@ -162,7 +169,7 @@ public class SettingData
         }
     }
 
-    private float _seVolume;
+    private float _seVolume = 1;
     public float seVolume
     {
         get
@@ -176,7 +183,7 @@ public class SettingData
         }
     }
 
-    private float _delay;
+    private float _delay = 0;
     public float delay
     {
         get
@@ -185,22 +192,8 @@ public class SettingData
         }
         set
         {
-            if (value < 0) return;
+            if (value < -1 || value > 1) return;
             _delay = value;
-        }
-    }
-
-    private float _speed;
-    public float speed
-    {
-        get
-        {
-            return _speed;
-        }
-        set
-        {
-            if (value < 0) return;
-            _speed = value;
         }
     }
 
