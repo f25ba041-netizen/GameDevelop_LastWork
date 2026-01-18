@@ -11,7 +11,7 @@ using UnityEditor.TerrainTools;
 public class GameSceneManager : MonoBehaviour
 {
     public ParticleSystem beamParticle;
-    public GameObject posePanel;
+    public GameObject pausePanel;
     public GameObject countdownPanel;
     public Text countdownText;
     public GameObject resultPanel;
@@ -28,7 +28,7 @@ public class GameSceneManager : MonoBehaviour
             return _score;
         }
     }
-    public bool isPose = true;
+    public bool isPause = true;
     public AxionMovement axion;
     public bool isRight = false;
     public bool isInverse = false;
@@ -69,20 +69,22 @@ public class GameSceneManager : MonoBehaviour
         if (currentCircleList.Count <= 0) return;
         float circleTimer = currentCircleList[0].timer;
         if (circleTimer < 0.8) return;
+        // +- 0.2 ミス
         Destroy(currentCircleList[0].transform.gameObject);
         if (circleTimer > 1.1 || circleTimer < 0.9) return;
-        axion.attack();
+        // +- 0.1 成功
+        axion.attack(); // エフェクト
         score += 100;
         if (circleTimer > 1.14 || circleTimer < 0.96) return;
+        // +- 0.04 パーフェクト
         score += 50;
-        // まだエフェクトのみ 判定の処理を付ける
     }
 
-    public void poseGame(){
+    public void pauseGame(){
         if (beat.IsEnd()) return;
-        if (isPose) return;
-        isPose = true;
-        posePanel.SetActive(true);
+        if (isPause) return;
+        isPause = true;
+        pausePanel.SetActive(true);
     }
 
     public void settingButton(){
@@ -99,10 +101,10 @@ public class GameSceneManager : MonoBehaviour
 
     public void continueButton(){
         countdownPanel.SetActive(true);
-        posePanel.SetActive(false);
+        pausePanel.SetActive(false);
         countdownText.text = "3";
         StartCoroutine(DelayMethod(3.0f , () => {
-            isPose = false;
+            isPause = false;
             countdownPanel.SetActive(false);
         }));
         StartCoroutine(DelayMethod(2.0f , () => {
@@ -127,7 +129,7 @@ public class GameSceneManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        posePanel.SetActive(false);
+        pausePanel.SetActive(false);
         countdownPanel.SetActive(false);
         resultPanel.SetActive(false);
 
@@ -145,7 +147,7 @@ public class GameSceneManager : MonoBehaviour
         bpm = notes.bpms[0][1];
         beat = new Beat();
         StartCoroutine(DelayMethod(3f , () => { // 3秒後に開始
-            isPose = false;
+            isPause = false;
         }));
     }
 
@@ -153,9 +155,9 @@ public class GameSceneManager : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape)){
-            poseGame();
+            pauseGame();
         }
-        if(isPose) return;
+        if(isPause) return;
 
         currentTime += Time.deltaTime;
         currentBeat = currentTime * (bpm * 8);
@@ -179,7 +181,7 @@ public class GameSceneManager : MonoBehaviour
         {
             StartCoroutine(DelayMethod(2f, () => { // 2秒後にリザルトへ
                 resultPanel.SetActive(true);
-                isPose = true;
+                isPause = true;
             }));
             return;
         }

@@ -15,9 +15,9 @@ public class AttackParticleRemove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (beforePause && !manager.isPose) particle.Play();
-        beforePause = manager.isPose;
-        if (manager.isPose) {
+        if (beforePause && !manager.isPause) particle.Play();
+        beforePause = manager.isPause;
+        if (manager.isPause) {
             particle.Pause();
             return;
         }

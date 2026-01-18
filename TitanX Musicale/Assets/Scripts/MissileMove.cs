@@ -15,7 +15,7 @@ public class MissileMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (manager.isPose) {
+        if (manager.isPause) {
             return;
         }
         Vector3 pos = transform.position;

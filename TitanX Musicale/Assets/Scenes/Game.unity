@@ -7186,7 +7186,7 @@ GameObject:
   - component: {fileID: 1196067446}
   - component: {fileID: 1196067445}
   m_Layer: 5
-  m_Name: PosePanel
+  m_Name: PausePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7363,12 +7363,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSceneManager
   beamParticle: {fileID: 67604329}
-  posePanel: {fileID: 1196067443}
+  pausePanel: {fileID: 1196067443}
   countdownPanel: {fileID: 597867971}
   countdownText: {fileID: 1651945240}
   resultPanel: {fileID: 923233210}
   resultEvalText: {fileID: 1588857504}
   musicID: 0
+  isPause: 1
   axion: {fileID: 919132147942448099}
   isRight: 0
   isInverse: 0

@@ -18,7 +18,7 @@ public class CircleMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (manager.isPose) {
+        if (manager.isPause) {
             return;
         }
         timer += Time.deltaTime;
