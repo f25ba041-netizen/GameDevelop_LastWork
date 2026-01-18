@@ -213,8 +213,10 @@ public class GameSceneManager : MonoBehaviour
         bpm = notes.bpms[0][1];
         beat = new Beat();
         StartCoroutine(DelayMethod(3f , () => { // 3秒後に開始
-            BGM.Play();
             isPause = false;
+        }));
+        StartCoroutine(DelayMethod(3f + GameManager.Instance.settingData.delay * 2 , () => { // 遅延を反映させてBGMを再生
+            BGM.Play();
         }));
     }
 
