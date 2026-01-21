@@ -29,7 +29,7 @@ public class CircleMove : MonoBehaviour
         }
         timer += Time.deltaTime;
         rectTransform.localScale = rectTransform.localScale - (new Vector3(1,1,1) * Time.deltaTime / 2);
-        if(timer > 1.2)
+        if(timer > 1.3)
         {
             Destroy(gameObject);
         }

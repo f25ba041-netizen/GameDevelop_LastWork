@@ -96,25 +96,25 @@ public class GameSceneManager : MonoBehaviour
             return;
         }
         float circleTimer = currentCircleList[0].timer;
-        if (circleTimer < 0.8) {
+        if (circleTimer < 0.7) {
             AttackMissSE.Play();
             return;
         }
 
-        // +- 0.2 ミス
+        // +- 0.3 ミス
         Destroy(currentCircleList[0].transform.gameObject);
-        if (circleTimer > 1.1 || circleTimer < 0.9) {
+        if (circleTimer > 1.2 || circleTimer < 0.8) {
             AttackMissSE.Play();
             return;
         }
 
-        // +- 0.1 成功
+        // +- 0.2 成功
         axion.attack(); // エフェクト
         AttackSE.Play();
         score += 100;
-        if (circleTimer > 1.14 || circleTimer < 0.96) return;
+        if (circleTimer > 1.1 || circleTimer < 0.9) return;
 
-        // +- 0.04 パーフェクト
+        // +- 0.1 パーフェクト
         score += 50;
     }
 
