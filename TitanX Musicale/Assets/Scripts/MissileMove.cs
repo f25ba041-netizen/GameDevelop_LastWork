@@ -12,6 +12,8 @@ public class MissileMove : MonoBehaviour
     public float speed = 300; // →約0.4秒で届く
     private float timer = 0;
     private bool beforeAttack = true;
+    public bool isInverse = false;
+    
     // Update is called once per frame
     void Update()
     {
@@ -25,8 +27,8 @@ public class MissileMove : MonoBehaviour
             beforeAttack = false;
             GameObject obj = GameObject.Find("GameSceneManager");
             GameSceneManager manager = obj.GetComponent<GameSceneManager>();
-            manager.score -= (manager.isInverse != manager.isRight ? 100 : 0);
-            if (manager.isInverse != manager.isRight) GameObject.Find("DamageSE").GetComponent<AudioSource>().Play();
+            manager.score -= (isInverse != manager.isRight ? 100 : 0);
+            if (isInverse != manager.isRight) GameObject.Find("DamageSE").GetComponent<AudioSource>().Play();
         }
         if(timer > 5) {
             Destroy(gameObject);

@@ -442,6 +442,8 @@ public class GameSceneManager : MonoBehaviour
 
     void GenerateMissile(){ // 0.4秒前に
         GameObject missileObj = Instantiate(missilePrefab);
+        MissileMove movement = missileObj.GetComponent<MissileMove>();
+        movement.isInverse = isInverse;
         missileObj.transform.position = missilePos.transform.position;
         missileObj.transform.rotation = missilePos.transform.rotation;
     }
