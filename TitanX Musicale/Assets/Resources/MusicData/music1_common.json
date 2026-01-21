@@ -166,6 +166,12 @@
             "type": 1
         },
         {
+            "tick": 22320,
+            "lane": 13,
+            "width": 1,
+            "type": 2
+        },
+        {
             "tick": 23040,
             "lane": 7,
             "width": 2,
@@ -312,12 +318,6 @@
         {
             "tick": 46080,
             "lane": 7,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 47040,
-            "lane": 2,
             "width": 2,
             "type": 1
         },
@@ -670,12 +670,6 @@
             "type": 1
         },
         {
-            "tick": 88800,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 89280,
             "lane": 2,
             "width": 2,
@@ -852,12 +846,6 @@
             "type": 1
         },
         {
-            "tick": 47040,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 48720,
             "lane": 12,
             "width": 2,
@@ -978,12 +966,6 @@
             "type": 1
         },
         {
-            "tick": 88800,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 89280,
             "lane": 2,
             "width": 2,
@@ -1083,7 +1065,7 @@
                 "type": 1
             },
             {
-                "tick": 46560,
+                "tick": 47520,
                 "lane": 12,
                 "width": 2,
                 "type": 2
@@ -1161,13 +1143,13 @@
         ],
         [
             {
-                "tick": 84960,
+                "tick": 85440,
                 "lane": 12,
                 "width": 2,
                 "type": 1
             },
             {
-                "tick": 87840,
+                "tick": 88320,
                 "lane": 12,
                 "width": 2,
                 "type": 2
