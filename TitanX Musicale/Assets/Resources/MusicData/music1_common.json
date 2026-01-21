@@ -166,12 +166,6 @@
             "type": 1
         },
         {
-            "tick": 22320,
-            "lane": 13,
-            "width": 1,
-            "type": 2
-        },
-        {
             "tick": 23040,
             "lane": 7,
             "width": 2,
@@ -292,12 +286,6 @@
             "type": 1
         },
         {
-            "tick": 39840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 40320,
             "lane": 7,
             "width": 2,
@@ -382,13 +370,7 @@
             "type": 2
         },
         {
-            "tick": 54480,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 54720,
+            "tick": 54240,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -430,12 +412,6 @@
             "type": 1
         },
         {
-            "tick": 62160,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 62400,
             "lane": 2,
             "width": 2,
@@ -450,12 +426,6 @@
         {
             "tick": 64320,
             "lane": 7,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 64080,
-            "lane": 12,
             "width": 2,
             "type": 1
         },
@@ -478,12 +448,6 @@
             "type": 1
         },
         {
-            "tick": 66000,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 66240,
             "lane": 2,
             "width": 2,
@@ -502,7 +466,7 @@
             "type": 1
         },
         {
-            "tick": 67680,
+            "tick": 68160,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -511,7 +475,7 @@
             "tick": 69120,
             "lane": 7,
             "width": 2,
-            "type": 1
+            "type": 2
         },
         {
             "tick": 70080,
@@ -520,10 +484,22 @@
             "type": 1
         },
         {
+            "tick": 70080,
+            "lane": 2,
+            "width": 2,
+            "type": 1
+        },
+        {
+            "tick": 70320,
+            "lane": 2,
+            "width": 2,
+            "type": 1
+        },
+        {
             "tick": 71040,
             "lane": 7,
             "width": 2,
-            "type": 2
+            "type": 1
         },
         {
             "tick": 72000,
@@ -598,13 +574,13 @@
             "type": 1
         },
         {
-            "tick": 79200,
+            "tick": 79680,
             "lane": 12,
             "width": 2,
             "type": 1
         },
         {
-            "tick": 79680,
+            "tick": 80160,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -840,12 +816,6 @@
             "type": 1
         },
         {
-            "tick": 39840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 48720,
             "lane": 12,
             "width": 2,
@@ -882,19 +852,7 @@
             "type": 1
         },
         {
-            "tick": 54480,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 54720,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 62160,
+            "tick": 54240,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -906,20 +864,8 @@
             "type": 1
         },
         {
-            "tick": 64080,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 64320,
             "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 66000,
-            "lane": 2,
             "width": 2,
             "type": 1
         },
@@ -930,8 +876,20 @@
             "type": 1
         },
         {
-            "tick": 67680,
+            "tick": 68160,
             "lane": 12,
+            "width": 2,
+            "type": 1
+        },
+        {
+            "tick": 70080,
+            "lane": 2,
+            "width": 2,
+            "type": 1
+        },
+        {
+            "tick": 70320,
+            "lane": 2,
             "width": 2,
             "type": 1
         },
@@ -954,13 +912,13 @@
             "type": 1
         },
         {
-            "tick": 79200,
+            "tick": 79680,
             "lane": 12,
             "width": 2,
             "type": 1
         },
         {
-            "tick": 79680,
+            "tick": 80160,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -1045,13 +1003,13 @@
         ],
         [
             {
-                "tick": 40800,
+                "tick": 40320,
                 "lane": 2,
                 "width": 2,
                 "type": 1
             },
             {
-                "tick": 43680,
+                "tick": 42720,
                 "lane": 2,
                 "width": 2,
                 "type": 2
@@ -1073,13 +1031,13 @@
         ],
         [
             {
-                "tick": 55200,
+                "tick": 54720,
                 "lane": 12,
                 "width": 2,
                 "type": 1
             },
             {
-                "tick": 57120,
+                "tick": 56640,
                 "lane": 12,
                 "width": 2,
                 "type": 2
@@ -1093,21 +1051,7 @@
                 "type": 1
             },
             {
-                "tick": 60480,
-                "lane": 2,
-                "width": 2,
-                "type": 2
-            }
-        ],
-        [
-            {
-                "tick": 68160,
-                "lane": 2,
-                "width": 2,
-                "type": 1
-            },
-            {
-                "tick": 70560,
+                "tick": 60960,
                 "lane": 2,
                 "width": 2,
                 "type": 2
