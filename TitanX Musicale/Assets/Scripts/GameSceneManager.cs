@@ -115,7 +115,7 @@ public class GameSceneManager : MonoBehaviour
         if (circleTimer > 1.1 || circleTimer < 0.9) return;
 
         // +- 0.1 パーフェクト
-        score += 50;
+        score += 20;
     }
 
     public void pauseGame(){ // ポーズしてポーズメニューを表示
@@ -177,15 +177,15 @@ public class GameSceneManager : MonoBehaviour
 
     private void evalScore(){ // C～Sの評価を決定
         float rate = (float)score/beat.maxScore;
-        if (rate > 0.8){
+        if (rate > 0.75){
             result = Score.S;
             return;
         }
-        if (rate > 0.6){
+        if (rate > 0.50){
             result = Score.A;
             return;
         }
-        if (rate > 0.4){
+        if (rate > 0.3){
             result = Score.B;
             return;
         }
@@ -306,7 +306,7 @@ public class GameSceneManager : MonoBehaviour
                 }
             }
 
-            maxScore = notes.taps.Count * 150;
+            maxScore = notes.taps.Count * 120;
 
             while (notes.taps.Count > 0 || notes.directionals.Count > 0 || notes.slides.Count > 0)
             { // ノーツを読み込んで時間順にflowに入れる

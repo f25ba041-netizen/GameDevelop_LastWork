@@ -27,7 +27,7 @@ public class MissileMove : MonoBehaviour
             beforeAttack = false;
             GameObject obj = GameObject.Find("GameSceneManager");
             GameSceneManager manager = obj.GetComponent<GameSceneManager>();
-            manager.score -= (isInverse != manager.isRight ? 100 : 0);
+            manager.score -= (isInverse != manager.isRight ? 80 : 0);
             if (isInverse != manager.isRight) GameObject.Find("DamageSE").GetComponent<AudioSource>().Play();
         }
         if(timer > 5) {
