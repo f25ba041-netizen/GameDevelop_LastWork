@@ -94,12 +94,6 @@
             "type": 1
         },
         {
-            "tick": 10320,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 10560,
             "lane": 12,
             "width": 2,
@@ -118,13 +112,7 @@
             "type": 1
         },
         {
-            "tick": 11760,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 12000,
+            "tick": 12480,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -154,18 +142,6 @@
             "type": 1
         },
         {
-            "tick": 16800,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 17040,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 17280,
             "lane": 7,
             "width": 2,
@@ -174,6 +150,12 @@
         {
             "tick": 18240,
             "lane": 7,
+            "width": 2,
+            "type": 1
+        },
+        {
+            "tick": 17280,
+            "lane": 2,
             "width": 2,
             "type": 1
         },
@@ -200,12 +182,6 @@
             "lane": 7,
             "width": 2,
             "type": 2
-        },
-        {
-            "tick": 22800,
-            "lane": 2,
-            "width": 2,
-            "type": 1
         },
         {
             "tick": 23040,
@@ -424,12 +400,6 @@
             "type": 1
         },
         {
-            "tick": 42720,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 42960,
             "lane": 2,
             "width": 2,
@@ -484,12 +454,6 @@
             "type": 1
         },
         {
-            "tick": 46560,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 48000,
             "lane": 7,
             "width": 2,
@@ -527,6 +491,18 @@
         },
         {
             "tick": 53760,
+            "lane": 12,
+            "width": 2,
+            "type": 1
+        },
+        {
+            "tick": 54240,
+            "lane": 12,
+            "width": 2,
+            "type": 1
+        },
+        {
+            "tick": 53760,
             "lane": 7,
             "width": 2,
             "type": 1
@@ -536,18 +512,6 @@
             "lane": 7,
             "width": 2,
             "type": 2
-        },
-        {
-            "tick": 54240,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 54480,
-            "lane": 12,
-            "width": 2,
-            "type": 1
         },
         {
             "tick": 55200,
@@ -618,18 +582,6 @@
         {
             "tick": 64320,
             "lane": 7,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 63840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 64320,
-            "lane": 12,
             "width": 2,
             "type": 1
         },
@@ -846,43 +798,19 @@
             "type": 1
         },
         {
-            "tick": 10320,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 10560,
             "lane": 12,
             "width": 2,
             "type": 1
         },
         {
-            "tick": 11760,
-            "lane": 2,
-            "width": 2,
-            "type": 3
-        },
-        {
-            "tick": 12000,
+            "tick": 12480,
             "lane": 2,
             "width": 2,
             "type": 1
         },
         {
-            "tick": 16800,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 17040,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 22800,
+            "tick": 17280,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -972,12 +900,6 @@
             "type": 1
         },
         {
-            "tick": 42720,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 42960,
             "lane": 2,
             "width": 2,
@@ -1008,19 +930,13 @@
             "type": 1
         },
         {
-            "tick": 46560,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 54240,
+            "tick": 53760,
             "lane": 12,
             "width": 2,
             "type": 1
         },
         {
-            "tick": 54480,
+            "tick": 54240,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -1034,18 +950,6 @@
         {
             "tick": 55680,
             "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 63840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 64320,
-            "lane": 12,
             "width": 2,
             "type": 1
         },
@@ -1107,7 +1011,7 @@
                 "type": 1
             },
             {
-                "tick": 9600,
+                "tick": 10080,
                 "lane": 2,
                 "width": 2,
                 "type": 2
@@ -1115,7 +1019,7 @@
         ],
         [
             {
-                "tick": 12480,
+                "tick": 13440,
                 "lane": 12,
                 "width": 2,
                 "type": 1
@@ -1129,7 +1033,7 @@
         ],
         [
             {
-                "tick": 17760,
+                "tick": 18000,
                 "lane": 12,
                 "width": 2,
                 "type": 1
@@ -1163,7 +1067,7 @@
                 "type": 1
             },
             {
-                "tick": 29280,
+                "tick": 29760,
                 "lane": 2,
                 "width": 2,
                 "type": 2
@@ -1199,7 +1103,7 @@
         ],
         [
             {
-                "tick": 47040,
+                "tick": 46560,
                 "lane": 12,
                 "width": 2,
                 "type": 1
@@ -1242,20 +1146,6 @@
         [
             {
                 "tick": 60960,
-                "lane": 2,
-                "width": 2,
-                "type": 1
-            },
-            {
-                "tick": 63600,
-                "lane": 2,
-                "width": 2,
-                "type": 2
-            }
-        ],
-        [
-            {
-                "tick": 64560,
                 "lane": 2,
                 "width": 2,
                 "type": 1
