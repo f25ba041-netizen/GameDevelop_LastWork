@@ -14,7 +14,11 @@ public class CircleMove : MonoBehaviour
         transform.SetParent(GameObject.Find("Canvas").transform);
         transform.SetSiblingIndex(1); // 判定基準の上に表示
         rectTransform = gameObject.GetComponent<RectTransform>();
+        rectTransform.localScale = Vector3.one;
         rectTransform.anchoredPosition = new Vector3(-5,250,0);
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 650);
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 650);
+        
     }
     // Update is called once per frame
     void Update()
