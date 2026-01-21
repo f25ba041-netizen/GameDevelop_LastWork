@@ -203,10 +203,8 @@ public class GameSceneManager : MonoBehaviour
         resultPanel.SetActive(false);
 
         // 曲のIDを見てモデルをボロボロにするか決める
-        //
-        // ここにコードを埋める
-        //
-        // if ( GameManager.Instance.saveData.statusID = StatusID.XXXXXXXXXX ) axion.toBroken();
+        if ( GameManager.Instance.saveData.statusID == StatusID.music2_lose ) axion.toBroken();
+        if ( GameManager.Instance.saveData.statusID == StatusID.music3_lose ) axion.toBroken();
 
         NotesData notes = GameManager.Instance.notesData;
         BGM.clip = Resources.Load<AudioClip>($"MusicData/{notes.metadata.title}"); // 音楽ファイル読み込み
