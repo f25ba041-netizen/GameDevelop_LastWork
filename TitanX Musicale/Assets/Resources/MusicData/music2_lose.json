@@ -46,12 +46,6 @@
             "type": 1
         },
         {
-            "tick": 9120,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 9600,
             "lane": 7,
             "width": 2,
@@ -70,19 +64,7 @@
             "type": 1
         },
         {
-            "tick": 11040,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 11520,
-            "lane": 7,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 12480,
             "lane": 7,
             "width": 2,
             "type": 2
@@ -244,18 +226,6 @@
             "type": 1
         },
         {
-            "tick": 36000,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 36240,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 36480,
             "lane": 7,
             "width": 2,
@@ -269,18 +239,6 @@
         },
         {
             "tick": 37440,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 37920,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 38160,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -305,12 +263,6 @@
         },
         {
             "tick": 39840,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 40080,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -448,12 +400,6 @@
             "type": 1
         },
         {
-            "tick": 58080,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 59520,
             "lane": 7,
             "width": 2,
@@ -574,18 +520,6 @@
             "type": 1
         },
         {
-            "tick": 78240,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 78480,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 78720,
             "lane": 7,
             "width": 2,
@@ -599,18 +533,6 @@
         },
         {
             "tick": 79680,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 80160,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 80400,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -658,18 +580,6 @@
             "type": 1
         },
         {
-            "tick": 87840,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 88080,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 88320,
             "lane": 7,
             "width": 2,
@@ -689,12 +599,6 @@
         },
         {
             "tick": 89760,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 90000,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -724,18 +628,6 @@
             "type": 1
         },
         {
-            "tick": 93600,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 93840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 94080,
             "lane": 7,
             "width": 2,
@@ -754,18 +646,6 @@
             "type": 1
         },
         {
-            "tick": 95520,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 95760,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 96000,
             "lane": 7,
             "width": 2,
@@ -778,40 +658,16 @@
             "type": 2
         },
         {
-            "tick": 96480,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 97440,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 97920,
             "lane": 7,
             "width": 2,
-            "type": 1
+            "type": 2
         },
         {
             "tick": 98880,
             "lane": 7,
             "width": 2,
             "type": 2
-        },
-        {
-            "tick": 97920,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 98400,
-            "lane": 2,
-            "width": 2,
-            "type": 1
         },
         {
             "tick": 99360,
@@ -910,28 +766,10 @@
             "type": 1
         },
         {
-            "tick": 110880,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 111120,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 111360,
             "lane": 7,
             "width": 2,
             "type": 2
-        },
-        {
-            "tick": 111840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
         },
         {
             "tick": 113280,
@@ -958,19 +796,7 @@
             "type": 1
         },
         {
-            "tick": 115680,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 116640,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 116880,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -979,35 +805,11 @@
             "tick": 117120,
             "lane": 7,
             "width": 2,
-            "type": 2
+            "type": 1
         },
         {
             "tick": 118080,
             "lane": 7,
-            "width": 2,
-            "type": 2
-        },
-        {
-            "tick": 117600,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 117840,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 118560,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 118800,
-            "lane": 12,
             "width": 2,
             "type": 1
         },
@@ -1015,23 +817,17 @@
             "tick": 119040,
             "lane": 7,
             "width": 2,
-            "type": 2
+            "type": 1
         },
         {
             "tick": 120000,
             "lane": 7,
             "width": 2,
-            "type": 2
-        },
-        {
-            "tick": 119520,
-            "lane": 2,
-            "width": 2,
             "type": 1
         },
         {
-            "tick": 119760,
-            "lane": 2,
+            "tick": 119520,
+            "lane": 12,
             "width": 2,
             "type": 1
         },
@@ -1072,18 +868,6 @@
             "type": 1
         },
         {
-            "tick": 122400,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 122640,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 122880,
             "lane": 7,
             "width": 2,
@@ -1103,18 +887,6 @@
         },
         {
             "tick": 123840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 124320,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 124560,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -1215,12 +987,6 @@
             "tick": 8400,
             "lane": 12,
             "width": 2,
-            "type": 3
-        },
-        {
-            "tick": 9120,
-            "lane": 12,
-            "width": 2,
             "type": 1
         },
         {
@@ -1231,12 +997,6 @@
         },
         {
             "tick": 10560,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 11040,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -1326,18 +1086,6 @@
             "type": 1
         },
         {
-            "tick": 36000,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 36240,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 36960,
             "lane": 12,
             "width": 2,
@@ -1345,18 +1093,6 @@
         },
         {
             "tick": 37440,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 37920,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 38160,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -1375,12 +1111,6 @@
         },
         {
             "tick": 39840,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 40080,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -1452,12 +1182,6 @@
             "type": 1
         },
         {
-            "tick": 58080,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 60480,
             "lane": 2,
             "width": 2,
@@ -1518,18 +1242,6 @@
             "type": 1
         },
         {
-            "tick": 78240,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 78480,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 79200,
             "lane": 12,
             "width": 2,
@@ -1542,18 +1254,6 @@
             "type": 1
         },
         {
-            "tick": 80160,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 80400,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 86880,
             "lane": 2,
             "width": 2,
@@ -1561,18 +1261,6 @@
         },
         {
             "tick": 87360,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 87840,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 88080,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -1596,12 +1284,6 @@
             "type": 1
         },
         {
-            "tick": 90000,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 92640,
             "lane": 12,
             "width": 2,
@@ -1614,18 +1296,6 @@
             "type": 1
         },
         {
-            "tick": 93600,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 93840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 94560,
             "lane": 2,
             "width": 2,
@@ -1633,42 +1303,6 @@
         },
         {
             "tick": 95040,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 95520,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 95760,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 96480,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 97440,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 97920,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 98400,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -1728,31 +1362,7 @@
             "type": 1
         },
         {
-            "tick": 110880,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 111120,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 111840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 115200,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 115680,
             "lane": 2,
             "width": 2,
             "type": 1
@@ -1764,44 +1374,8 @@
             "type": 1
         },
         {
-            "tick": 116880,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 117600,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 117840,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 118560,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 118800,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 119520,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 119760,
-            "lane": 2,
+            "lane": 12,
             "width": 2,
             "type": 1
         },
@@ -1830,18 +1404,6 @@
             "type": 1
         },
         {
-            "tick": 122400,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 122640,
-            "lane": 2,
-            "width": 2,
-            "type": 1
-        },
-        {
             "tick": 123360,
             "lane": 12,
             "width": 2,
@@ -1849,18 +1411,6 @@
         },
         {
             "tick": 123840,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 124320,
-            "lane": 12,
-            "width": 2,
-            "type": 1
-        },
-        {
-            "tick": 124560,
             "lane": 12,
             "width": 2,
             "type": 1
@@ -1927,7 +1477,7 @@
                 "type": 1
             },
             {
-                "tick": 28320,
+                "tick": 27840,
                 "lane": 2,
                 "width": 2,
                 "type": 2
@@ -1969,7 +1519,7 @@
                 "type": 1
             },
             {
-                "tick": 49440,
+                "tick": 48960,
                 "lane": 12,
                 "width": 2,
                 "type": 2
@@ -2039,7 +1589,7 @@
                 "type": 1
             },
             {
-                "tick": 72960,
+                "tick": 72480,
                 "lane": 12,
                 "width": 2,
                 "type": 2
@@ -2053,7 +1603,7 @@
                 "type": 1
             },
             {
-                "tick": 74880,
+                "tick": 74400,
                 "lane": 2,
                 "width": 2,
                 "type": 2
@@ -2151,7 +1701,7 @@
                 "type": 1
             },
             {
-                "tick": 107520,
+                "tick": 107040,
                 "lane": 2,
                 "width": 2,
                 "type": 2
@@ -2173,13 +1723,13 @@
         ],
         [
             {
-                "tick": 112320,
+                "tick": 111840,
                 "lane": 2,
                 "width": 2,
                 "type": 1
             },
             {
-                "tick": 113280,
+                "tick": 112800,
                 "lane": 2,
                 "width": 2,
                 "type": 2
@@ -2195,6 +1745,20 @@
             {
                 "tick": 114720,
                 "lane": 12,
+                "width": 2,
+                "type": 2
+            }
+        ],
+        [
+            {
+                "tick": 117600,
+                "lane": 2,
+                "width": 2,
+                "type": 1
+            },
+            {
+                "tick": 119040,
+                "lane": 2,
                 "width": 2,
                 "type": 2
             }
