@@ -46,7 +46,6 @@ public class GameSceneManager : MonoBehaviour
             return _score;
         }
     }
-    private bool isResult = false;
     public bool isPause = true;
     public AxionMovement axion;
     public bool isRight = false;
@@ -70,6 +69,14 @@ public class GameSceneManager : MonoBehaviour
     public AudioSource AttackSE;
     public AudioSource AttackMissSE;
 
+    private enum NoteType
+    {
+        None,
+        Attak,
+        Beam,
+        Missile,
+    }
+
     public void moveToRight(){
         axion.moveToRight();
         isRight = true;
@@ -80,7 +87,7 @@ public class GameSceneManager : MonoBehaviour
         isRight = false;
     }
 
-    public void attack(){
+    public void attack(){ 
         currentCircleList.RemoveAll(item => item == null);
         if (currentCircleList.Count <= 0) {
             AttackMissSE.Play();
@@ -108,11 +115,11 @@ public class GameSceneManager : MonoBehaviour
         // +- 0.04 パーフェクト
         score += 50;
     }
-    public void pauseGame(){
+
+    public void pauseGame(){ // ポーズしてポーズメニューを表示
         ButtonSE.Play();
         if (beat.IsEnd()) return;
         if (isPause) return;
-        Time.timeScale = 0f;
         isPause = true;
         pausePanel.SetActive(true);
     }
@@ -144,9 +151,9 @@ public class GameSceneManager : MonoBehaviour
         ButtonSE.Play();
         countdownPanel.SetActive(true);
         pausePanel.SetActive(false);
+        // 3秒カウントダウン表示して戻る
         countdownText.text = "3";
         StartCoroutine(DelayMethod(3.0f , () => {
-            Time.timeScale = 1f;
             isPause = false;
             countdownPanel.SetActive(false);
         }));
@@ -166,7 +173,7 @@ public class GameSceneManager : MonoBehaviour
         }));
     }
 
-    private void evalScore(){
+    private void evalScore(){ // C～Sの評価を決定
         float rate = (float)score/beat.maxScore;
         if (rate > 0.8){
             result = Score.S;
@@ -185,11 +192,10 @@ public class GameSceneManager : MonoBehaviour
 
     private IEnumerator DelayMethod(float waitTime, Action action)
     { // 指定時間後に渡した関数が実行される
-        yield return new WaitForSecondsRealtime(waitTime);
+        yield return new WaitForSeconds(waitTime);
         action();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         pausePanel.SetActive(false);
@@ -214,7 +220,6 @@ public class GameSceneManager : MonoBehaviour
         }));
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape)){
@@ -250,32 +255,29 @@ public class GameSceneManager : MonoBehaviour
             }));
             return;
         }
-        if (beat.current != null)
+
+        if (currentBeat >= beat.current.tick)
         {
-            if (currentBeat >= beat.current.tick)
+            switch (beat.current.beatType)
             {
-                switch (beat.current.beatType)
-                {
-                    case BeatType.Tap:
-                        Attack();
-                        break;
-                    case BeatType.Critical:
-                        Spin();
-                        break;
-                    case BeatType.Directional:
-                        Missile();
-                        break;
-                    case BeatType.SlideStart:
-                        Beam();
-                        break;
-                    case BeatType.SlideEnd:
-                        BeamEnd();
-                        break;
-                }
-                beat.Next();
+                case BeatType.Tap:
+                    ShowAttackRing();
+                    break;
+                case BeatType.Critical:
+                    TitanXSpin();
+                    break;
+                case BeatType.Directional:
+                    GenerateMissile();
+                    break;
+                case BeatType.SlideStart:
+                    ShowBeam();
+                    break;
+                case BeatType.SlideEnd:
+                    BeamEnd();
+                    break;
             }
+            beat.Next();
         }
-        
     }
 
     class Beat
@@ -307,7 +309,8 @@ public class GameSceneManager : MonoBehaviour
             maxScore = notes.taps.Count * 150;
 
             while (notes.taps.Count > 0 || notes.directionals.Count > 0 || notes.slides.Count > 0)
-            {
+            { // ノーツを読み込んで時間順にflowに入れる
+                // 無限ループを回避
                 safety++;
                 if (safety > 10000)
                 {
@@ -315,6 +318,7 @@ public class GameSceneManager : MonoBehaviour
                     break;
                 }
 
+                // 各種類のノーツで一番早いものを仮リストに入れる
                 List<Note> tempList = new List<Note>();
                 Note slideEnd = null;
                 if(notes.taps.Count > 0)
@@ -341,19 +345,18 @@ public class GameSceneManager : MonoBehaviour
                     tempList.Add(notes.slides[0][0]);
                     slideEnd = notes.slides[0][1];
                 }
-
                 if (tempList.Count == 0)
                 {
                     Debug.LogError("tempList is empty. Data broken?");
                     break;
                 }
 
+                // 仮リストから一番早いものを選んでflowに追加、元のリストからは削除
                 int minIndex = tempList
                     .Select((note, index) => new { note.tick, index })
                     .OrderBy(x => x.tick)
                     .First()
                     .index;
-
                 switch (tempList[minIndex].beatType)
                 {
                     case BeatType.Tap:
@@ -382,6 +385,9 @@ public class GameSceneManager : MonoBehaviour
                 }
             }
 
+            // 結局タイミングの調整とかでズレるから並べ直す
+            flow = flow.OrderBy(p => p.tick).ToList();
+
             if (flow.Count < 1) return;
             current = flow[0];
 
@@ -391,8 +397,10 @@ public class GameSceneManager : MonoBehaviour
         
         public void Next()
         {
-            current = next;
-
+            if (next != null)
+            {
+                current = next;
+            }
             currentIndex++;
             if(currentIndex + 1 < flow.Count)
             {
@@ -403,6 +411,7 @@ public class GameSceneManager : MonoBehaviour
                 next = null;
             }
         }
+
         public bool IsEnd()
         {
             if (currentIndex >= flow.Count) return true;
@@ -410,12 +419,13 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    void Attack()
+    void ShowAttackRing()
     {
         GameObject circle = Instantiate(circlePrefab);
         currentCircleList.Add(circle.GetComponent<CircleMove>());
     }
-    void Beam(){
+
+    void ShowBeam(){
         // チャージ開始から再生するためチャージ分の時間を考える
         // チャージには1秒かかる
         beamParticle.Play();
@@ -430,14 +440,15 @@ public class GameSceneManager : MonoBehaviour
         existBeam = false;
     }
 
-    void Missile(){ // 0.4秒前に
+    void GenerateMissile(){ // 0.4秒前に
         GameObject missileObj = Instantiate(missilePrefab);
         missileObj.transform.position = missilePos.transform.position;
         missileObj.transform.rotation = missilePos.transform.rotation;
     }
 
-    void Spin(){
+    void TitanXSpin(){
         isInverse = !isInverse;
+        // 0.09秒かけて回転
         TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
         StartCoroutine(DelayMethod(0.03f , () => {
             TitanX.transform.Rotate(new Vector3(0, 0, 1), 180f/4);
