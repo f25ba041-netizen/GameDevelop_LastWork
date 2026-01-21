@@ -93,13 +93,12 @@ public class GameManager
     }
 
     public bool selectMusic(){ // 選曲が失敗したとき(=エンディングのとき)falseを返す
-        // !
-        // ここに選曲処理を書く
-        // !
-
-        //テスト用
-        if (saveData.statusID == StatusID.test2) return false;
-        saveData.statusID = StatusID.music_test;
+        if (saveData.statusID == StatusID.story_endA || saveData.statusID == StatusID.story_endB) return false;
+        if (saveData.statusID == StatusID.story1) saveData.statusID = StatusID.music1_common;
+        if (saveData.statusID == StatusID.story2A) saveData.statusID = StatusID.music2_win;
+        if (saveData.statusID == StatusID.story2B) saveData.statusID = StatusID.music2_lose;
+        if (saveData.statusID == StatusID.story3A) saveData.statusID = StatusID.music3_win;
+        if (saveData.statusID == StatusID.story3B) saveData.statusID = StatusID.music3_lose;
 
         _notesData = loadNotesData($"{saveData.statusID}");
         saveData.gameStatus = GameStatus.Game;
@@ -107,14 +106,13 @@ public class GameManager
     }
 
     public void selectStory(Score score){
-        // !
-        // ここにストーリー選択の処理を書く
-
-        // !
-
-        //テスト用
-        if (saveData.statusID == StatusID.music_test) saveData.statusID = StatusID.test2;
-        else saveData.statusID = StatusID.test;
+        bool win = (score == Score.A || score == Score.S);
+        if (saveData.statusID == StatusID.music1_common && win) saveData.statusID = StatusID.story2A;
+        if (saveData.statusID == StatusID.music1_common && !win) saveData.statusID = StatusID.story2B;
+        if ((saveData.statusID == StatusID.music2_win || saveData.statusID == StatusID.music2_lose)  && win) saveData.statusID = StatusID.story3A;
+        if ((saveData.statusID == StatusID.music2_win || saveData.statusID == StatusID.music2_lose) && !win) saveData.statusID = StatusID.story3B;
+        if ((saveData.statusID == StatusID.music3_win || saveData.statusID == StatusID.music3_lose) && win) saveData.statusID = StatusID.story_endA;
+        if ((saveData.statusID == StatusID.music3_win || saveData.statusID == StatusID.music3_lose) && !win) saveData.statusID = StatusID.story_endB;
 
         saveData.gameStatus = GameStatus.Story;
     }
@@ -135,16 +133,25 @@ public enum GameStatus
 
 public enum StatusID
 {
-    test,
-    test2,
-    music_test,
+    music1_common,
+    music2_win,
+    music2_lose,
+    music3_win,
+    music3_lose,
+    story1,
+    story2A,
+    story2B,
+    story3A,
+    story3B,
+    story_endA,
+    story_endB,
 }
 
 [System.Serializable]
 public class SaveData{
     public Difficulty difficulty = Difficulty.Normal;
     public GameStatus gameStatus = GameStatus.Story;
-    public StatusID statusID = StatusID.test;
+    public StatusID statusID = StatusID.story1;
 
     public string toJson()
     {
