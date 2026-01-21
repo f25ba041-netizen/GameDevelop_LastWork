@@ -6,7 +6,9 @@ using System;
 using UnityEngine.UIElements;
 using System.Linq;
 using Newtonsoft.Json;
+#if UNITY_EDITOR
 using UnityEditor.TerrainTools;
+#endif
 
 public enum Score
 {

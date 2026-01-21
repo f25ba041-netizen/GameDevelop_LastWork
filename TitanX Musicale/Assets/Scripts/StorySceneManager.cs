@@ -38,12 +38,10 @@ public class StorySceneManager : MonoBehaviour
         action();
     }
 
-    public StorySceneManager(){
-        StoryID = GameManager.Instance.saveData.statusID.ToString();
-    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        StoryID = GameManager.Instance.saveData.statusID.ToString();
         string jsonData = Resources.Load<TextAsset>($"StoryData/{StoryID}").ToString();
         storyData = JsonUtility.FromJson<StoryData>(jsonData);
         background.sprite = Resources.Load<Sprite>($"{storyData.scenes[0].image}");
