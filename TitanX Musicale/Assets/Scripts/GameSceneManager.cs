@@ -62,7 +62,6 @@ public class GameSceneManager : MonoBehaviour
     private float currentTime = 0f;
     private float currentBeat = 0f;
     private Beat beat;
-    private EvaluationType evaluation = EvaluationType.None;
     private List<CircleMove> currentCircleList = new List<CircleMove>();
     public AudioSource ButtonSE;
     public AudioSource BGM;
@@ -70,15 +69,6 @@ public class GameSceneManager : MonoBehaviour
     public AudioSource DamageSE;
     public AudioSource AttackSE;
     public AudioSource AttackMissSE;
-
-    public enum EvaluationType
-    {
-        None,
-        C,
-        B,
-        A,
-        S,
-    }
 
     public void moveToRight(){
         axion.moveToRight();
@@ -281,13 +271,6 @@ public class GameSceneManager : MonoBehaviour
                     case BeatType.SlideEnd:
                         BeamEnd();
                         break;
-                }
-                if (beat.IsEnd())
-                {
-                    StartCoroutine(DelayMethod(1f, () => { // 1秒後にリザルト画面
-                        GameManager.Instance.save();
-                        resultPanel.SetActive(true);
-                    }));
                 }
                 beat.Next();
             }
