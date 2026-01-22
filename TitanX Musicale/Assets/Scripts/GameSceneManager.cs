@@ -119,6 +119,7 @@ public class GameSceneManager : MonoBehaviour
     }
 
     public void pauseGame(){ // ポーズしてポーズメニューを表示
+        BGM.Pause();
         ButtonSE.Play();
         if (beat.IsEnd()) return;
         if (isPause) return;
@@ -157,6 +158,7 @@ public class GameSceneManager : MonoBehaviour
         countdownText.text = "3";
         StartCoroutine(DelayMethod(3.0f , () => {
             isPause = false;
+            BGM.Play();
             countdownPanel.SetActive(false);
         }));
         StartCoroutine(DelayMethod(2.0f , () => {

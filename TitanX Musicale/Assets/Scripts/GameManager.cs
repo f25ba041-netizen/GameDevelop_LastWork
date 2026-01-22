@@ -111,10 +111,10 @@ public class GameManager
         bool win = (score == Score.A || score == Score.S);
         if (saveData.statusID == StatusID.music1_common && win) saveData.statusID = StatusID.story2A;
         if (saveData.statusID == StatusID.music1_common && !win) saveData.statusID = StatusID.story2B;
-        if ((saveData.statusID == StatusID.music2_win || saveData.statusID == StatusID.music2_lose)  && win) saveData.statusID = StatusID.story3A;
-        if ((saveData.statusID == StatusID.music2_win || saveData.statusID == StatusID.music2_lose) && !win) saveData.statusID = StatusID.story3B;
-        if ((saveData.statusID == StatusID.music3_win || saveData.statusID == StatusID.music3_lose) && win) saveData.statusID = StatusID.story_endA;
-        if ((saveData.statusID == StatusID.music3_win || saveData.statusID == StatusID.music3_lose) && !win) saveData.statusID = StatusID.story_endB;
+        if (saveData.statusID == StatusID.music2_win && win) saveData.statusID = StatusID.story3A;
+        if (saveData.statusID == StatusID.music2_lose || (saveData.statusID == StatusID.music2_win && !win)) saveData.statusID = StatusID.story3B;
+        if (saveData.statusID == StatusID.music3_win && win) saveData.statusID = StatusID.story_endA;
+        if (saveData.statusID == StatusID.music3_lose || (saveData.statusID == StatusID.music3_win && !win)) saveData.statusID = StatusID.story_endB;
 
         saveData.gameStatus = GameStatus.Story;
     }
